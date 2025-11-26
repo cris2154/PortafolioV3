@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../styles/global.css" />
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro Basics</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	html,
+	body {
+		padding: 0;
+		margin: 0;
+		width: 100vh;
+		height: 100vh;
+	}
+</style>
