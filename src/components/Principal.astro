@@ -1,9 +1,34 @@
-<div>
-    <section class="bg-black h-screen w-screen mask-top-gradient flex items-center justify-center">
-      <h1 class="text-white text-4xl font-bold">Contenido de la sección</h1>
-    </section>
-</div>
+
+  <section id="projects-section" class="min-h-screen flex items-center justify-center bg-black text-white mask-top-gradient relative overflow-hidden projects-font">
+    <div class="w-full relative">
+      <div class="text-line absolute left-0 right-0 z-10">
+        <h1 id="projectsTextTop" class="text-5xl sm:text-6xl md:text-8xl lg:text-5xl font-black text-white inline-block whitespace-nowrap">
+          PROJECTS
+        </h1>
+      </div>
+       <div class="flex flex-col items-center justify-center gap-4 pointer-events-none z-20 relative">
+       <div class="relative font-serif flex items-center justify-center">
+          <div id="projectsRect" class="w-96 h-60 bg-white/5 border border-white/20 rounded-3xl backdrop-blur-md shadow-2xl"></div>
+          <div id="projectsRect2" class="w-96 h-60 bg-white/5 border border-white/20 rounded-3xl backdrop-blur-md shadow-2xl absolute top-6 left-1/2 -translate-x-1/2 opacity-0 scale-95"></div>
+          <div id="projectsRect3" class="w-96 h-60 bg-white/5 border border-white/20 rounded-3xl backdrop-blur-md shadow-2xl absolute top-12 left-1/2 -translate-x-1/2 opacity-0 scale-95"></div>
+        </div>
+        <p id="projectsFollowText" class="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] opacity-0 translate-y-6">More coming</p>
+        <div id="projectsSecondText" class="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] opacity-0 translate-y-6">New layer</div>
+        <div id="projectsThirdText" class="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] opacity-0 translate-y-6">Final reveal</div>
+      </div>
+
+    </div>
+  </section>
+
   <style>
+    .text-line {
+      white-space: nowrap;
+      overflow: hidden;
+      position: absolute;
+      z-index: 10;
+      top: -120px;
+    }
+
     /* Gradiente negro en el top de la sección - sin corte visible */
     .mask-top-gradient {
       position: relative;
@@ -27,4 +52,150 @@
       pointer-events: none;
       z-index: 10;
     }
+
+    .projects-font {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    @media (max-width: 768px) {
+      #projects-section .text-line {
+        top: -80px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #projects-section .text-line {
+        top: -60px;
+      }
+    }
   </style>
+
+<script>
+  import gsap from "gsap";
+  import ScrollTrigger from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+
+    const textTop = document.getElementById("projectsTextTop");
+    const originalText = "PROJECTS";
+    const rect2 = document.getElementById("projectsRect2");
+    const rect3 = document.getElementById("projectsRect3");
+    const secondText = document.getElementById("projectsSecondText");
+    const thirdText = document.getElementById("projectsThirdText");
+    const followText = document.getElementById("projectsFollowText");
+
+    const getMotionConfig = (width) => {
+      if (width < 640) {
+        return {
+          x: -500,
+          rect1Y: 200,
+          rect2FromY: 260,
+          rect2ToY: 240,
+          rect3FromY: 300,
+          rect3ToY: 270,
+          w: 600,
+          h: 400,
+        };
+      }
+      if (width < 1024) {
+        return {
+          x: -500,
+          rect1Y: 200,
+          rect2FromY: 260,
+          rect2ToY: 240,
+          rect3FromY: 300,
+          rect3ToY: 270,
+          w: 600,
+          h: 400,
+        };
+      }
+      return {
+        x: -500,
+        rect1Y: 200,
+        rect2FromY: 260,
+        rect2ToY: 240,
+        rect3FromY: 300,
+        rect3ToY: 270,
+        w: 600,
+        h: 400,
+      };
+    };
+
+    const motion = getMotionConfig(window.innerWidth);
+
+    // Repetir el texto para ambas líneas
+    const repetitions = 15;
+    
+    let repeatedText = '';
+    for (let i = 0; i < repetitions; i++) {
+      repeatedText += originalText + ' • ';
+    }
+    
+    textTop.textContent = repeatedText;
+    
+    // Animación línea superior: de izquierda a derecha
+    gsap.fromTo(textTop, 
+      {
+        x: '-100%'
+      },
+      {
+        x: '0%',
+        duration: 2,
+        scrollTrigger: {
+          trigger: '#projects-section',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+        ease: 'none'
+      }
+    );
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#projects-section',
+        start: 'top ',
+        end: 'bottom ',
+        scrub: 0.6,
+        pin: true,
+        // markers: true,
+      },
+    });
+
+    // Animación rectángulo: mueve a flex-start (arriba) y aumenta tamaño
+    tl.to('#projectsRect', {
+      y: motion.rect1Y,
+      x: motion.x,         // mueve hacia flex-start (arriba)
+      width: motion.w,      // aumenta ancho
+      height: motion.h,     // aumenta alto
+      ease: 'power2.inOut'
+    })
+    // Texto aparece justo después del rectángulo
+    .fromTo('#projectsFollowText',
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+    )
+    // Texto desaparece antes de la siguiente capa
+    .to('#projectsFollowText', { opacity: 0, y: -10, duration: 0.4, ease: 'power1.in' }, '+=0.1')
+    // Segundo rectángulo se coloca encima dejando ver parte del primero
+    .fromTo(rect2,
+      { opacity: 0, x: motion.x, y: motion.rect2FromY, width: motion.w, height: motion.h, scale: 1 },
+      { opacity: 1, x: motion.x, y: motion.rect2ToY, width: motion.w, height: motion.h, duration: 0.8, ease: 'power2.out' }
+    )
+    // Nuevo texto aparece después del segundo rectángulo
+    .fromTo(secondText,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+    )
+    // Oculta el segundo texto antes de la tercera capa
+    .to(secondText, { opacity: 0, y: -10, duration: 0.4, ease: 'power1.in' }, '+=0.1')
+    // Tercer rectángulo se apila dejando ver el anterior
+    .fromTo(rect3,
+      { opacity: 0, x: motion.x, y: motion.rect3FromY, width: motion.w, height: motion.h, scale: 1 },
+      { opacity: 1, x: motion.x, y: motion.rect3ToY, width: motion.w, height: motion.h, duration: 0.8, ease: 'power2.out' }
+    )
+    // Tercer texto aparece después del tercer rectángulo
+    .fromTo(thirdText,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
+    );
+
+  </script>
