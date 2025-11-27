@@ -1,0 +1,30 @@
+<div>
+    <section class="bg-black h-screen w-screen mask-top-gradient flex items-center justify-center">
+      <h1 class="text-white text-4xl font-bold">Contenido de la sección</h1>
+    </section>
+</div>
+  <style>
+    /* Gradiente negro en el top de la sección - sin corte visible */
+    .mask-top-gradient {
+      position: relative;
+    }
+    
+    .mask-top-gradient::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 300px;
+      background: linear-gradient(
+        to bottom,
+        #000000 0%,
+        rgba(0, 0, 0, 0.9) 20%,
+        rgba(0, 0, 0, 0.6) 50%,
+        rgba(0, 0, 0, 0.3) 75%,
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
