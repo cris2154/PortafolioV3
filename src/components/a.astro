@@ -1,0 +1,50 @@
+      </div>
+    <script >
+  import gsap from "gsap";
+    import ScrollTrigger from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+  const tl = gsap.timeline();
+  tl.from("#project-title", {
+    stagger: { amount: 0.3 },
+    skewY: 7,
+    y: 100,
+    opacity: 0,
+    duration: 1,
+    ease: "power4.out",
+  });
+  tl.from("#hero-image", {
+    y: 200, // empieza más abajo
+    opacity: 0, // invisible al inicio
+    duration: 1.4, // tiempo del efecto
+    ease: "power4.out", // un pequeño retraso elegante
+  });
+
+  gsap.to("#divimg", {
+    scrollTrigger: {
+      trigger: "#seccion1",
+      start: "top ", // cuando la parte superior de la imagen llegue a la parte inferior del viewport
+      end: "bottom ", // cuando la parte inferior de la imagen llegue a la parte superior del viewport
+      scrub: true,
+      // markers: true,
+    },
+    y: 200, // empieza más abajo
+    opacity: 0, // invisible al inicio
+    duration: 1.4, // tiempo del efecto
+    ease: "power4.out", // un pequeño retraso elegante
+  });
+  gsap.to("#divtext", {
+    scrollTrigger: {
+      trigger: "#seccion1",
+      start: "top ", // cuando la parte superior de la imagen llegue a la parte inferior del viewport
+      end: "bottom ", // cuando la parte inferior de la imagen llegue a la parte superior del viewport
+      scrub: true,
+      // markers: true,
+    },
+    stagger: { amount: 0.3 },
+    skewY: 7,
+    y: 200, // empieza más abajo
+    opacity: 0, // invisible al inicio
+    duration: 1.4, // tiempo del efecto
+    ease: "power4.out", // un pequeño retraso elegante
+  });
+</script>

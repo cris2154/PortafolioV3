@@ -1,4 +1,4 @@
- <style>
+<style>
     /* Gradiente de fondo mejorado */
     .bg-gradient-dark {
       background: radial-gradient(circle at center, rgba(120,0,8,1) 0%, rgba(30,0,0,1) 100%);
@@ -34,80 +34,111 @@
       z-index: 5;
     }
 
-    /* Estados iniciales para animación */
+    .relief-texture {
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 1px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .relief-texture::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px
+        );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Textura de ruido sutil */
+    .relief-texture::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+    }
+    /* Mejora rendimiento: hint al navegador sobre propiedades que animamos */
     .animate-item {
-      opacity: 0;
-      transform: translateY(50px);
+      will-change: transform, opacity;
     }
   </style>
-<section id="seccion1"
-  class="h-screen w-screen flex items-center bg-[#6b0008] bg-gradient-dark text-white overflow-hidden mask-bottom-gradient p-20"
->
-  <div
-    class="w-screen h-screen flex items-center flex-col justify-between md:flex-row px-6 sm:px-10 py-10 md:py-0 md:mt-20"
-  >
-    <!-- TEXTO IZQUIERDA -->
-    <div id="divtext"
-      class="w-full md:max-w-xl text-left space-y-4 md:space-y-6 mt-16 md:mt-0 z-10"
-    >
-      <h1
-        id="project-title"
-        class="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight"
-      >
-        Cristhian Huamaní
-        <span id="project-title" class="block text-black mt-2"
-          >Frontend Developer</span
-        >
-      </h1>
-
-      <p
-        id="project-title"
-        class="text-base sm:text-lg md:text-xl text-neutral-300 max-w-lg pr-4 md:pr-0"
-      >
-        Construyo experiencias web rápidas, modernas y enfocadas en resultados
-        reales de negocio.
-      </p>
-
-      <div id="project-title" class="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 md:mt-8">
-    <a
-      href="#proyectos"
-      class="px-6 sm:px-8 py-3 rounded-xl bg-black hover:bg-black hover:scale-105 transition-all duration-300 border border-none text-white font-medium text-center text-sm sm:text-base"
-    >
-      Ver Proyectos
-    </a>
-    
-    <a
-      href="https://wa.me/51921554150"
-      target="_blank"
-      class="px-6 sm:px-8 py-3 rounded-xl bg-black/80 hover:bg-black hover:scale-105 transition-all duration-300 border border-none text-white font-medium text-center text-sm sm:text-base"
-    >
-      Contáctame
-    </a>
-    
-    <a
-      href="/cv.pdf"
-      download
-      class="px-6 sm:px-8 py-3 rounded-xl bg-black/60 hover:bg-black hover:scale-105 transition-all duration-300 border border-none text-white font-medium text-center text-sm sm:text-base"
-    >
-      Descargar CV
-    </a>
-  </div>
-    </div>
-
-    <!-- IMAGEN DERECHA -->
-    <div id="divimg"
-      class="w-full md:w-[50%] h-[400px] sm:h-[500px] md:h-[50%] md:mr-20 relative flex items-end justify-center overflow-hidden mt-8 md:mt-0"
-    >
-      <img
-        id="hero-image"
-        src="/cris.png"
-        alt="Cristhian Huamaní"
-        class="object-cover object-top w-full h-full mask-fade"
-      />
-    </div>
-  </div>
-</section>
-<script>
+  <!-- Contenedor principal con bordes redondeados, márgenes, relieve y textura -->
+  <div class="mx-10 sm:mx-10 md:mx-20 mt-20 sm:mt-20 md:mt-40 rounded-3xl overflow-hidden relief-texture ">
+    <section id="seccion1"
+      class="h-screen w-full flex items-center bg-[#6b0008] bg-gradient-dark text-white mask-bottom-gradient">
+      <div
+        class="w-full h-screen flex items-center flex-col justify-between md:flex-row px-6 sm:px-10 py-10 md:py-0 md:mt-20">
+        <!-- TEXTO IZQUIERDA -->
+        <div id="divtext"
+          class="w-full md:max-w-xl text-left space-y-4 md:space-y-6 mt-16 md:mt-0 z-10">
+          <h1 id="project-title"
+            class="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight animate-item">
+            Cristhian Huamaní
+            <span class="block text-black mt-2">Frontend Developer</span>
+          </h1>
+          <p id="project-title"
+            class="text-base sm:text-lg md:text-xl text-neutral-300 max-w-lg pr-4 md:pr-0 animate-item">
+            Construyo experiencias web rápidas, modernas y enfocadas en resultados
+            reales de negocio.
+          </p>
+          <div id="project-title" class="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 md:mt-8 animate-item">
+            <a 
+              href="#proyectos"
+              class="px-6 sm:px-8 py-3 rounded-xl bg-black/80 hover:bg-black hover:scale-105 transition-all duration-300 border border-neutral-700 text-white font-medium text-center text-sm sm:text-base">
+              Ver Proyectos
+            </a>
+            <a 
+              href="https://wa.me/51921554150"
+              target="_blank"
+              class="px-6 sm:px-8 py-3 rounded-xl bg-black/80 hover:bg-black hover:scale-105 transition-all duration-300 border border-neutral-700 text-white font-medium text-center text-sm sm:text-base">
+              Contáctame
+            </a>
+            <a 
+              href="/cv.pdf"
+              download
+              class="px-6 sm:px-8 py-3 rounded-xl bg-black/60 hover:bg-black hover:scale-105 transition-all duration-300 border border-neutral-700 text-white font-medium text-center text-sm sm:text-base">
+              Descargar CV
+            </a>
+          </div>
+        </div>
+        <!-- IMAGEN DERECHA -->
+        <div id="divimg"
+          class="w-full md:w-[50%] h-[400px] sm:h-[500px] md:h-[50%] md:mr-20 relative flex items-end justify-center overflow-hidden mt-8 md:mt-0 animate-item">
+          <img
+            id="hero-image"
+            src="/cris.png"
+            alt="Cristhian Huamaní"
+            class="object-cover object-top w-full h-full mask-fade" />
+        </div>
+      </div>
+    </section>
+      </div>
+<script >
   import gsap from "gsap";
     import ScrollTrigger from "gsap/ScrollTrigger";
     gsap.registerPlugin(ScrollTrigger);
@@ -132,7 +163,7 @@
       trigger: "#seccion1",
       start: "top ", // cuando la parte superior de la imagen llegue a la parte inferior del viewport
       end: "bottom ", // cuando la parte inferior de la imagen llegue a la parte superior del viewport
-      scrub: true,
+        scrub: 0.6,
       // markers: true,
     },
     y: 200, // empieza más abajo
@@ -145,7 +176,7 @@
       trigger: "#seccion1",
       start: "top ", // cuando la parte superior de la imagen llegue a la parte inferior del viewport
       end: "bottom ", // cuando la parte inferior de la imagen llegue a la parte superior del viewport
-      scrub: true,
+      scrub: 0.6,
       // markers: true,
     },
     stagger: { amount: 0.3 },
