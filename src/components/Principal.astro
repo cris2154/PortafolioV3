@@ -1,34 +1,147 @@
 
   <section id="projects-section" class="min-h-screen flex items-center justify-center bg-black text-white mask-top-gradient relative overflow-hidden projects-font">
-    <div class="w-full relative">
-      <div class="text-line absolute left-0 right-0 z-10">
-        <h1 id="projectsTextTop" class="text-5xl sm:text-6xl md:text-8xl lg:text-5xl font-black text-white inline-block whitespace-nowrap">
-          PROJECTS
-        </h1>
-      </div>
-       <div class="flex flex-col items-center justify-center gap-4 pointer-events-none z-20 relative">
-       <div class="relative font-serif flex items-center justify-center">
-          <div id="projectsRect" class="w-96 h-60 bg-white/5 border border-white/20 rounded-3xl backdrop-blur-md shadow-2xl"></div>
-          <div id="projectsRect2" class="w-96 h-60 bg-white/5 border border-white/20 rounded-3xl backdrop-blur-md shadow-2xl absolute top-6 left-1/2 -translate-x-1/2 opacity-0 scale-95"></div>
-          <div id="projectsRect3" class="w-96 h-60 bg-white/5 border border-white/20 rounded-3xl backdrop-blur-md shadow-2xl absolute top-12 left-1/2 -translate-x-1/2 opacity-0 scale-95"></div>
-        </div>
-        <p id="projectsFollowText" class="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] opacity-0 translate-y-6">More coming</p>
-        <div id="projectsSecondText" class="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] opacity-0 translate-y-6">New layer</div>
-        <div id="projectsThirdText" class="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] opacity-0 translate-y-6">Final reveal</div>
-      </div>
+    <div class="h-screen w-full flex items-center justify-center bg-[#6b0008] bg-gradient-dark text-white mask-bottom-gradient mask-fade mx-10 sm:mx-10 md:mx-20 mt-20 sm:mt-20 md:mt-40 rounded-3xl overflow-hidden relief-texture">
+      <div class="w-full relative">
+        <div class="flex flex-col items-center justify-center gap-4 pointer-events-auto z-20 relative">
+          <div class="relative font-serif flex items-center justify-center">
+            <div id="projectsRect" class="w-96 h-60 bg-white/5 bg-[url(/dental.png)] bg-cover bg-center border border-white/20 rounded-3xl backdrop-blur-md shadow-2xl"></div>
+            <div id="projectsRect2" class="w-96 h-60 bg-white/5 bg-[url(/mrestaurant.png)] bg-cover bg-center border border-white/20 rounded-3xl backdrop-blur-md shadow-2xl absolute top-6 left-1/2 -translate-x-1/2 opacity-0 scale-95"></div>
+            <div id="projectsRect3" class="w-96 h-60 bg-white/5 border border-white/20 rounded-3xl backdrop-blur-md shadow-2xl absolute top-12 left-1/2 -translate-x-1/2 opacity-0 scale-95"></div>
+          </div>
+          <div class="w-screen max-w-none flex flex-col sm:grid sm:grid-cols-2 gap-4 px-0 sm:px-6 absolute left-1/2 -translate-x-1/2 top-[50%] -translate-y-1/2">
+            <div class="hidden sm:block sm:col-span-1"></div>
+            <div class="relative flex flex-col items-start gap-10 min-h-[140px] ">
+              <div class="project-block absolute inset-0 flex flex-col gap-2 px-15 sm:pl-40 w-100 sm:w-150 ">
+                <div id="projectsFollowText" class="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] opacity-0 pr-20 sm:pr-40 lg:pr-0 lg:pl-202xl:pl-0">DentalCare – Landing Page para Clínica Dental</div>
+                <div id="projectsFollowDesc" class="text-sm sm:text-base text-white/80 opacity-0 pr-20 sm:pr-40 lg:pr-0 ">Landing page minimalista para una clínica dental enfocada en claridad visual, branding limpio y conversión.</div>
+                <div id="projectsFollowIcons" class="flex items-center gap-3 text-white opacity-0">
+                  <a href="#" aria-label="JavaScript" class="tech-icon">GSAP</a>
+                  <a href="#" aria-label="CSS" class="tech-icon">JS</a>
+                  <a href="#" aria-label="React" class="tech-icon">ASTRO</a>
+                </div>
+                <button id="projectsFollowBtn" class="w-50 py-2 border border-white/40 rounded-xl text-sm text-white opacity-0">Ver proyecto</button>
+                <button id="projectsFollowBtnSecondary" class="w-50 py-2 border border-white/70 bg-white text-black rounded-xl text-sm opacity-0 hover:bg-transparent hover:text-white transition-colors">Ver repositorio</button>
+                
+              </div>
 
+              <div class="project-block absolute inset-0 flex flex-col gap-2 px-15 sm:pl-40 w-100 sm:w-150">
+                <div id="projectsSecondText" class="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] opacity-0 pr-20 sm:pr-40 lg:pr-0">MRestaurante – Landing Page para Restaurante</div>
+                <div id="projectsSecondDesc" class="text-sm sm:text-base text-white/80 opacity-0 pr-20 sm:pr-40 lg:pr-0">Landing page dinámica para restaurante con animaciones GSAP e imágenes flotantes.</div>
+                <div id="projectsSecondIcons" class="flex items-center gap-3 text-white opacity-0">
+                  <a href="#" aria-label="HTML" class="tech-icon">REACT</a>
+                  <a href="#" aria-label="CSS" class="tech-icon">JS</a>
+                  <a href="#" aria-label="JS" class="tech-icon">GSAP</a>
+                </div>
+                <button id="projectsSecondBtn" class="w-50 py-2 border border-white/40 rounded-xl text-sm text-white opacity-0">Ver proyecto</button>
+                <button id="projectsSecondBtnSecondary" class="w-50 py-2 border border-white/70 bg-white text-black rounded-xl text-sm opacity-0 hover:bg-transparent hover:text-white transition-colors">Ver repositorio</button>
+              </div>
+
+              <div class="project-block absolute inset-0 flex flex-col gap-2 top-[10%] px-15 sm:pl-40 w-100 sm:w-150">
+                <div id="projectsThirdText" class="text-sm sm:text-base md:text-lg text-white tracking-[0.2em] sm:tracking-[0.25em] opacity-0 pr-20 sm:pr-40 lg:pr-0">Mi Portafolio – Web Personal</div>
+                <div id="projectsThirdDesc" class="text-sm sm:text-base text-white/80 opacity-0 pr-20 sm:pr-40 lg:pr-0">
+Sitio web moderno donde presento mis proyectos, habilidades y enfoque profesional.</div>
+                <div id="projectsThirdIcons" class="flex items-center gap-3 text-white opacity-0">
+                  <a href="#" aria-label="Astro" class="tech-icon">GSAP</a>
+                  <a href="#" aria-label="TypeScript" class="tech-icon">JS</a>
+                  <a href="#" aria-label="GSAP" class="tech-icon">ASTRO</a>
+                </div>
+                <button id="projectsThirdBtn" class="w-50 py-2 border border-white/40 rounded-xl text-sm text-white opacity-0">Ver proyecto</button>
+                <button id="projectsThirdBtnSecondary" class="w-50 py-2 border border-white/70 bg-white text-black rounded-xl text-sm opacity-0 hover:bg-transparent hover:text-white transition-colors">Ver repositorio</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <style>
-    .text-line {
-      white-space: nowrap;
-      overflow: hidden;
-      position: absolute;
-      z-index: 10;
-      top: -120px;
+
+    .bg-gradient-dark {
+      background: radial-gradient(circle at center, rgb(230, 92, 1) 0%, rgba(30, 0, 0, 1) 100%);
     }
 
+    /* Máscara para la imagen */
+    .mask-fade {
+      mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+    }
+
+    /* Gradiente negro en el bottom de la sección */
+    .mask-bottom-gradient {
+      position: relative;
+    }
+    
+    .mask-bottom-gradient::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 300px;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.3) 25%,
+        rgba(0, 0, 0, 0.6) 50%,
+        rgba(0, 0, 0, 0.9) 75%,
+        #000000 100%
+      );
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .relief-texture {
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 1px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .relief-texture::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px
+        );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Textura de ruido sutil */
+    .relief-texture::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+    }
+    .project-block {
+      padding-right: var(--project-text-margin-right, 20px);
+    }
     /* Gradiente negro en el top de la sección - sin corte visible */
     .mask-top-gradient {
       position: relative;
@@ -40,33 +153,30 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 300px;
-      background: linear-gradient(
-        to bottom,
-        #000000 0%,
-        rgba(0, 0, 0, 0.9) 20%,
-        rgba(0, 0, 0, 0.6) 50%,
-        rgba(0, 0, 0, 0.3) 75%,
-        transparent 100%
-      );
+      height: 0;
+      background: none;
       pointer-events: none;
       z-index: 10;
     }
 
-    .projects-font {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    .tech-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.45rem 0.6rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: #ffffff;
+      color: #000000;
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+      transition: all 0.25s ease;
     }
 
-    @media (max-width: 768px) {
-      #projects-section .text-line {
-        top: -80px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      #projects-section .text-line {
-        top: -60px;
-      }
+    .tech-icon:hover {
+      background: transparent;
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.9);
     }
   </style>
 
@@ -74,128 +184,192 @@
   import gsap from "gsap";
   import ScrollTrigger from "gsap/ScrollTrigger";
     gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
 
-    const textTop = document.getElementById("projectsTextTop");
-    const originalText = "PROJECTS";
+    const getContainerSize = () => {
+      const container = document.querySelector("#projects-section .bg-gradient-dark");
+      if (!container) return { w: 600, h: 400, containerWidth: 1000 };
+      const baseWidth = container.clientWidth || 1000;
+      const w = Math.min(Math.max(baseWidth * 0.6, 260), 900);
+      const h = w * 0.62;
+      return { w, h, containerWidth: baseWidth };
+    };
+
     const rect2 = document.getElementById("projectsRect2");
     const rect3 = document.getElementById("projectsRect3");
     const secondText = document.getElementById("projectsSecondText");
     const thirdText = document.getElementById("projectsThirdText");
     const followText = document.getElementById("projectsFollowText");
+    const followDesc = document.getElementById("projectsFollowDesc");
+    const followIcons = document.getElementById("projectsFollowIcons");
+    const followBtn = document.getElementById("projectsFollowBtn");
+    const followBtnSecondary = document.getElementById("projectsFollowBtnSecondary");
+    const secondDesc = document.getElementById("projectsSecondDesc");
+    const secondIcons = document.getElementById("projectsSecondIcons");
+    const secondBtn = document.getElementById("projectsSecondBtn");
+    const secondBtnSecondary = document.getElementById("projectsSecondBtnSecondary");
+    const thirdDesc = document.getElementById("projectsThirdDesc");
+    const thirdIcons = document.getElementById("projectsThirdIcons");
+    const thirdBtn = document.getElementById("projectsThirdBtn");
+    const thirdBtnSecondary = document.getElementById("projectsThirdBtnSecondary");
 
-    const getMotionConfig = (width) => {
-      if (width < 640) {
-        return {
-          x: -500,
-          rect1Y: 200,
-          rect2FromY: 260,
-          rect2ToY: 240,
-          rect3FromY: 300,
-          rect3ToY: 270,
-          w: 600,
-          h: 400,
-        };
-      }
-      if (width < 1024) {
-        return {
-          x: -500,
-          rect1Y: 200,
-          rect2FromY: 260,
-          rect2ToY: 240,
-          rect3FromY: 300,
-          rect3ToY: 270,
-          w: 600,
-          h: 400,
-        };
-      }
-      return {
-        x: -500,
-        rect1Y: 200,
-        rect2FromY: 260,
-        rect2ToY: 240,
-        rect3FromY: 300,
-        rect3ToY: 270,
-        w: 600,
-        h: 400,
-      };
+    const applyTextMargin = () => {
+      const container = document.querySelector("#projects-section .bg-gradient-dark");
+      if (!container) return;
+      const margin = 20;
+      container.style.setProperty('--project-text-margin-right', `${margin}px`);
     };
 
-    const motion = getMotionConfig(window.innerWidth);
+    if (!rect2 || !rect3) {
+      console.warn("Projects section elements not found");
+    } else {
+      const createTimeline = (motion, textMotion) => {
+        return gsap.timeline({
+          scrollTrigger: {
+            trigger: '#projects-section',
+            start: 'top ',
+            end: 'bottom ',
+            scrub: 1,
+            pin: true,
+            // markers: true,
+          },
+        })
+        // Animación rectángulo: mueve a flex-start (arriba) y aumenta tamaño
+        .to('#projectsRect', {
+          y: motion.rect1Y,
+          x: motion.x,
+          width: motion.w,
+          height: motion.h,
+          ease: 'power2.inOut'
+        })
+        .fromTo('#projectsFollowText',
+          { opacity: 0, y: textMotion.followText.from },
+          { opacity: 1, y: textMotion.followText.to, duration: 0.6, ease: 'power2.out' }
+        )
+        .fromTo([followDesc, followIcons, followBtn, followBtnSecondary],
+          { opacity: 0, y: textMotion.follow.from },
+          { opacity: 1, y: textMotion.follow.to, duration: 0.6, ease: 'power2.out', stagger: 0.05 }
+        )
+        .to(['#projectsFollowText', followDesc, followIcons, followBtn, followBtnSecondary], { opacity: 0, y: -10, duration: 0.4, ease: 'power1.in' }, '+=0.1')
+        .fromTo(rect2,
+          { opacity: 0, x: motion.x, y: motion.rect2FromY, width: motion.w, height: motion.h, scale: 1 },
+          { opacity: 1, x: motion.x, y: motion.rect2ToY, width: motion.w, height: motion.h, duration: 0.8, ease: 'power2.out' }
+        )
+        .fromTo(secondText,
+          { opacity: 0, y: textMotion.secondText.from },
+          { opacity: 1, y: textMotion.secondText.to, duration: 0.6, ease: 'power2.out' }
+        )
+        .fromTo([secondDesc, secondIcons, secondBtn, secondBtnSecondary],
+          { opacity: 0, y: textMotion.second.from },
+          { opacity: 1, y: textMotion.second.to, duration: 0.6, ease: 'power2.out', stagger: 0.05 }
+        )
+        .to([secondText, secondDesc, secondIcons, secondBtn, secondBtnSecondary], { opacity: 0, y: -10, duration: 0.4, ease: 'power1.in' }, '+=0.1')
+        .fromTo(rect3,
+          { opacity: 0, x: motion.x, y: motion.rect3FromY, width: motion.w, height: motion.h, scale: 1 },
+          { opacity: 1, x: motion.x, y: motion.rect3ToY, width: motion.w, height: motion.h, duration: 0.8, ease: 'power2.out' }
+        )
+        .fromTo(thirdText,
+          { opacity: 0, y: textMotion.thirdText.from },
+          { opacity: 1, y: textMotion.thirdText.to, duration: 0.6, ease: 'power2.out' }
+        )
+        .fromTo([thirdDesc, thirdIcons, thirdBtn, thirdBtnSecondary],
+          { opacity: 0, y: textMotion.third.from },
+          { opacity: 1, y: textMotion.third.to, duration: 0.6, ease: 'power2.out', stagger: 0.05 }
+        );
+      };
 
-    // Repetir el texto para ambas líneas
-    const repetitions = 15;
-    
-    let repeatedText = '';
-    for (let i = 0; i < repetitions; i++) {
-      repeatedText += originalText + ' • ';
+      mm.add("(max-width: 639px)", () => {
+        const { w, h, containerWidth } = getContainerSize();
+        const xLeft = -((containerWidth / 2) - (w / 2) - 20);
+        const textMotion = {
+          followText: { from: 25, to: -35 },
+          follow: { from: 25, to: -35 },
+          secondText: { from: 60, to: 60 },
+          second: { from: 60, to: 60 },
+          thirdText: { from: 40, to: 120 },
+          third: { from: 40, to:120 },
+        };
+        applyTextMargin();
+        const onResize = () => applyTextMargin();
+        window.addEventListener('resize', onResize);
+        const motion = {
+          x: xLeft,
+          rect1Y: -260,
+          rect2FromY: -200,
+          rect2ToY: -180,
+          rect3FromY: -140,
+          rect3ToY: -120,
+          w,
+          h,
+        };
+        const tl = createTimeline(motion, textMotion);
+        return () => {
+          tl.kill();
+          window.removeEventListener('resize', onResize);
+        };
+      });
+
+      mm.add("(min-width: 640px) and (max-width: 1899px)", () => {
+        const { w, h, containerWidth } = getContainerSize();
+        const xLeft = -((containerWidth / 2) - (w / 2) - 20);
+        const textMotion = {
+          followText: { from: 30, to: -110 },
+          follow: { from: 30, to: -110 },
+          secondText: { from: 70, to: -140 },
+          second: { from: 70, to: -140 },
+          thirdText: { from: 60, to: -100 },
+          third: { from: 60, to: -100 },
+        };
+        applyTextMargin();
+        const onResize = () => applyTextMargin();
+        window.addEventListener('resize', onResize);
+        const motion = {
+          x: xLeft,
+          rect1Y: -150,
+          rect2FromY: 180,
+          rect2ToY: -140,
+          rect3FromY: 220,
+          rect3ToY: -120,
+          w,
+          h,
+        };
+        const tl = createTimeline(motion, textMotion);
+        return () => {
+          tl.kill();
+          window.removeEventListener('resize', onResize);
+        };
+      });
+
+      mm.add("(min-width: 1900px)", () => {
+        const { w, h, containerWidth } = getContainerSize();
+        const xLeft = -((containerWidth / 2) - (w / 2) - 90);
+        const textMotion = {
+          followText: { from: 20, to: 10 },
+          follow: { from: 20, to: 0 },
+          secondText: { from: 50, to: 30 },
+          second: { from: 50, to: 30 },
+          thirdText: { from: 40, to: 60 },
+          third: { from: 40, to: 60 },
+        };
+        applyTextMargin();
+        const onResize = () => applyTextMargin();
+        window.addEventListener('resize', onResize);
+        const motion = {
+          x: xLeft,
+          rect1Y: -10,
+          rect2FromY: 60,
+          rect2ToY: 0,
+          rect3FromY: 90,
+          rect3ToY: 20,
+          w,
+          h,
+        };
+        const tl = createTimeline(motion, textMotion);
+        return () => {
+          tl.kill();
+          window.removeEventListener('resize', onResize);
+        };
+      });
     }
-    
-    textTop.textContent = repeatedText;
-    
-    // Animación línea superior: de izquierda a derecha
-    gsap.fromTo(textTop, 
-      {
-        x: '-100%'
-      },
-      {
-        x: '0%',
-        duration: 2,
-        scrollTrigger: {
-          trigger: '#projects-section',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-        },
-        ease: 'none'
-      }
-    );
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '#projects-section',
-        start: 'top ',
-        end: 'bottom ',
-        scrub: 0.6,
-        pin: true,
-        // markers: true,
-      },
-    });
-
-    // Animación rectángulo: mueve a flex-start (arriba) y aumenta tamaño
-    tl.to('#projectsRect', {
-      y: motion.rect1Y,
-      x: motion.x,         // mueve hacia flex-start (arriba)
-      width: motion.w,      // aumenta ancho
-      height: motion.h,     // aumenta alto
-      ease: 'power2.inOut'
-    })
-    // Texto aparece justo después del rectángulo
-    .fromTo('#projectsFollowText',
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
-    )
-    // Texto desaparece antes de la siguiente capa
-    .to('#projectsFollowText', { opacity: 0, y: -10, duration: 0.4, ease: 'power1.in' }, '+=0.1')
-    // Segundo rectángulo se coloca encima dejando ver parte del primero
-    .fromTo(rect2,
-      { opacity: 0, x: motion.x, y: motion.rect2FromY, width: motion.w, height: motion.h, scale: 1 },
-      { opacity: 1, x: motion.x, y: motion.rect2ToY, width: motion.w, height: motion.h, duration: 0.8, ease: 'power2.out' }
-    )
-    // Nuevo texto aparece después del segundo rectángulo
-    .fromTo(secondText,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
-    )
-    // Oculta el segundo texto antes de la tercera capa
-    .to(secondText, { opacity: 0, y: -10, duration: 0.4, ease: 'power1.in' }, '+=0.1')
-    // Tercer rectángulo se apila dejando ver el anterior
-    .fromTo(rect3,
-      { opacity: 0, x: motion.x, y: motion.rect3FromY, width: motion.w, height: motion.h, scale: 1 },
-      { opacity: 1, x: motion.x, y: motion.rect3ToY, width: motion.w, height: motion.h, duration: 0.8, ease: 'power2.out' }
-    )
-    // Tercer texto aparece después del tercer rectángulo
-    .fromTo(thirdText,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }
-    );
 
   </script>
