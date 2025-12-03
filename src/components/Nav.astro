@@ -1,0 +1,63 @@
+<header class="fixed top-0 left-0 w-full z-50 py-4 sm:py-6 px-4 sm:px-6">
+    <nav class="max-w-7xl mx-auto">
+        <div class="bg-white/90 backdrop-blur rounded-full shadow-lg px-6 sm:px-8 py-3 sm:py-4 flex items-center justify-between border border-gray-100">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-green-400 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 0 L20 20 L0 20 Z"></path>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold text-gray-900">PORTFOLIO</span>
+            </div>
+
+            <div class="hidden md:flex items-center gap-2">
+                <a href="#about" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">ABOUT</a>
+                <a href="#work" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">WORK</a>
+                <a href="#services" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">SERVICES</a>
+                <a href="#pricing" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">PRICING</a>
+                <a href="#faq" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">F.A.Q</a>
+            </div>
+
+            <div class="hidden md:block">
+                <a href="#contact" class="bg-gray-900 text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-all hover:shadow-lg">GET IN TOUCH</a>
+            </div>
+
+            <button id="nav-toggle" class="md:hidden p-2 text-gray-700 hover:text-gray-900" aria-label="Menu" aria-expanded="false">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden mt-3 hidden bg-white/95 backdrop-blur rounded-2xl shadow-lg border border-gray-100 px-4 py-3">
+            <div class="flex flex-col gap-2">
+                <a href="#about" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">ABOUT</a>
+                <a href="#work" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">WORK</a>
+                <a href="#services" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">SERVICES</a>
+                <a href="#pricing" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">PRICING</a>
+                <a href="#faq" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">F.A.Q</a>
+                <a href="#contact" class="px-4 py-3 text-center bg-gray-900 text-white rounded-full font-medium transition-all hover:bg-gray-800">GET IN TOUCH</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggle = document.getElementById('nav-toggle');
+        const menu = document.getElementById('mobile-menu');
+        if (!toggle || !menu) return;
+
+        toggle.addEventListener('click', () => {
+            const isHidden = menu.classList.toggle('hidden');
+            toggle.setAttribute('aria-expanded', String(!isHidden));
+        });
+
+        menu.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+                toggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+    });
+</script>
