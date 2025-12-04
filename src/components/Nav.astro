@@ -1,7 +1,7 @@
 <header class="fixed top-0 left-0 w-full z-50 py-4 sm:py-6 px-4 sm:px-6">
     <nav class="max-w-7xl mx-auto">
-        <div class="bg-white/90 backdrop-blur rounded-full shadow-lg px-6 sm:px-8 py-3 sm:py-4 flex items-center justify-between border border-gray-100">
-            <div class="flex items-center gap-2">
+        <div class="nav-shell bg-white/90 backdrop-blur rounded-full shadow-lg px-6 sm:px-8 py-3 sm:py-4 flex items-center justify-between border border-gray-100">
+            <div class="nav-brand flex items-center gap-2">
                 <div class="w-8 h-8 rounded-lg flex items-center justify-center">
                     <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M11 4C10.4477 4 10 4.44772 10 5V6H14V5C14 4.44772 13.5523 4 13 4H11ZM16 6V5C16 3.34315 14.6569 2 13 2H11C9.34315 2 8 3.34315 8 5V6H4C2.89543 6 2 6.89543 2 8V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V8C22 6.89543 21.1046 6 20 6H16ZM9 8H4V19H20V8H15H9Z" fill="#000000"/>
@@ -10,18 +10,18 @@
                 <span class="text-xl font-bold text-gray-900">PORTAFOLIO</span>
             </div>
 
-            <div class="hidden md:flex items-center gap-2">
+            <div class="nav-links hidden md:flex items-center gap-2">
                 <a href="#about" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">Sobre mi</a>
                 <a href="#work" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">Trabajos</a>
-                <a href="#services" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">habilidades</a>
-                <a href="#pricing" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">Contacto</a>
+                <a href="#hability" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">habilidades</a>
+                <a href="#final" class="px-6 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">Contacto</a>
             </div>
 
             <div class="hidden md:block">
-                <a href="#contact" class="bg-gray-900 text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-all hover:shadow-lg">Descargar Cv</a>
+                <a href="https://drive.google.com/file/d/1EIe0_i0j8IeF45yOtXB55c4vcCgLwAr7/view?usp=sharing" class="nav-cta bg-gray-900 text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-all hover:shadow-lg">Descargar Cv</a>
             </div>
 
-            <button id="nav-toggle" class="md:hidden p-2 text-gray-700 hover:text-gray-900" aria-label="Menu" aria-expanded="false">
+            <button id="nav-toggle" class="nav-toggle md:hidden p-2 text-gray-700 hover:text-gray-900" aria-label="Menu" aria-expanded="false">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
@@ -32,30 +32,65 @@
             <div class="flex flex-col gap-2">
                 <a href="#about" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">Sobre mi</a>
                 <a href="#work" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">Trabajos</a>
-                <a href="#services" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">habilidades</a>
-                <a href="#pricing" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">Contacto</a>
-                <a href="#contact" class="px-4 py-3 text-center bg-gray-900 text-white rounded-full font-medium transition-all hover:bg-gray-800">Descargar Cv</a>
+                <a href="#hability" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">habilidades</a>
+                <a href="#final" class="px-4 py-2 text-gray-700 rounded-full font-medium transition-all border border-transparent hover:border-gray-900">Contacto</a>
+                <a href="https://drive.google.com/file/d/1EIe0_i0j8IeF45yOtXB55c4vcCgLwAr7/view?usp=sharing" class="px-4 py-3 text-center bg-gray-900 text-white rounded-full font-medium transition-all hover:bg-gray-800">Descargar Cv</a>
             </div>
         </div>
     </nav>
 </header>
 
-<script>
+<script type="module">
+    import gsap from "gsap";
+    import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+    gsap.registerPlugin(ScrollToPlugin);
+
     document.addEventListener('DOMContentLoaded', () => {
         const toggle = document.getElementById('nav-toggle');
         const menu = document.getElementById('mobile-menu');
-        if (!toggle || !menu) return;
+        const navLinks = document.querySelectorAll('.nav-links a, #mobile-menu a');
+        const shell = document.querySelector('.nav-shell');
+        const brand = document.querySelector('.nav-brand');
+        const cta = document.querySelector('.nav-cta');
+        if (!toggle || !menu || !shell) return;
 
+        // Toggle mobile
         toggle.addEventListener('click', () => {
             const isHidden = menu.classList.toggle('hidden');
             toggle.setAttribute('aria-expanded', String(!isHidden));
         });
 
-        menu.querySelectorAll('a').forEach((link) => {
-            link.addEventListener('click', () => {
+        // Smooth scroll con GSAP ScrollTo
+        const scrollToTarget = (target) => {
+            if (!target) return;
+            // Usa GSAP ScrollTo si está disponible, si no, nativo smooth
+            if (ScrollToPlugin) {
+                gsap.to(window, { duration: 0.8, scrollTo: { y: target, offsetY: 80 }, ease: "power2.inOut" });
+            } else {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+                window.scrollBy({ top: -80, behavior: "instant" });
+            }
+        };
+
+        navLinks.forEach((link) => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href && href.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    scrollToTarget(target);
+                }
                 menu.classList.add('hidden');
                 toggle.setAttribute('aria-expanded', 'false');
             });
         });
+
+        // TL de entrada (ajusta duraciones/offsets a gusto)
+        const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.6 } });
+        tl.from(shell, { y: -30, opacity: 0 })
+          .from(brand, { y: -20, opacity: 0 }, "-=0.35")
+          .from(".nav-links a", { y: -10, opacity: 0, stagger: 0.08 }, "-=0.35")
+          .from(cta, { scale: 0.9, opacity: 0 }, "-=0.3")
+          .from(".nav-toggle", { scale: 0.9, opacity: 0 }, "-=0.45");
     });
 </script>
