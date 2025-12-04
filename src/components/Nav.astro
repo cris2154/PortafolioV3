@@ -40,7 +40,7 @@
     </nav>
 </header>
 
-<script type="module">
+<script >
     import gsap from "gsap";
     import { ScrollToPlugin } from "gsap/ScrollToPlugin";
     gsap.registerPlugin(ScrollToPlugin);
@@ -86,11 +86,5 @@
         });
 
         // TL de entrada (ajusta duraciones/offsets a gusto)
-        const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.6 } });
-        tl.from(shell, { y: -30, opacity: 0 })
-          .from(brand, { y: -20, opacity: 0 }, "-=0.35")
-          .from(".nav-links a", { y: -10, opacity: 0, stagger: 0.08 }, "-=0.35")
-          .from(cta, { scale: 0.9, opacity: 0 }, "-=0.3")
-          .from(".nav-toggle", { scale: 0.9, opacity: 0 }, "-=0.45");
     });
 </script>
