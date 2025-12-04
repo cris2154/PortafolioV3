@@ -1,54 +1,143 @@
-<div class="bg-[#101010] w-screen h-screen rounded-b-4xl flex flex-row items-center justify-center">
+<div class="w-full min-h-screen flex flex-col items-center justify-center p-4 bg-[#101010] ">
+        <div class="w-full max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+            
+            <!-- Stack de imágenes -->
+            <div class="flex items-center justify-center py-12">
+                <div id="stack" class="relative w-full max-w-sm h-80 cursor-pointer select-none">
+                    <!-- Imagen 3 (atrás) -->
+                    <img
+                        src="gym.jpg"
+                        alt="Gym"
+                        class="card absolute inset-0 w-full h-full object-cover rounded-3xl shadow-2xl top-20 rotate-60"
+                        data-layer="3"
+                        style="z-index: 1; transform: translateY(16px) scale(0.96);"
+                    />
+                    <!-- Imagen 2 (medio) -->
+                    <img
+                        src="foto.jpg"
+                        alt="Foto"
+                        class="card absolute inset-0 w-full h-full object-cover rounded-3xl shadow-2xl top-15 rotate-20"
+                        data-layer="2"
+                        style="z-index: 2; transform: translateY(8px) scale(0.98);"
+                    />
+                    <!-- Imagen 1 (adelante) -->
+                    <img
+                        src="monte.jpg"
+                        alt="Monte"
+                        class="card absolute inset-0 w-full h-full object-cover rounded-3xl shadow-2xl"
+                        data-layer="1"
+                        style="z-index: 3; transform: translateY(0px) scale(1);"
+                    />
+                    
+                    
 
-  <!-- GALERÍA DE TARJETAS -->
-  <div class="relative flex gap-6">
+                </div>
+            </div>
 
-    <!-- CARD 1 -->
-    <div class="w-[170px] h-[260px] rounded-xl overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition duration-500"
-         style="transform: translateY(30px) rotateY(-20deg);">
-      <img src="/img/about1.jpg" class="w-full h-full object-cover" />
+            <!-- Contenido "Sobre mí" -->
+            <div class="text-gray-200 space-y-6 px-4">
+                <h2 class="text-4xl md:text-5xl font-bold text-white">Sobre mí</h2>
+                <p class="text-lg leading-relaxed">
+                    Hola, soy <span class="font-semibold text-white">Cristhian Huamaní</span>, desarrollador frontend enfocado en crear landing pages modernas para pequeños negocios y emprendedores. 
+                    Combino diseño, animaciones y código para construir sitios rápidos, visuales y pensados para generar confianza y conversión. 
+                    Trabajo con React, Astro, Tailwind y GSAP, siempre cuidando detalles como fluidez, tipografía y experiencia del usuario.
+                </p>
+                <p class="text-lg leading-relaxed">
+                    Aunque soy junior, tengo una mentalidad clara: aprender rápido, mejorar en cada proyecto y entregar resultados que se vean profesionales. 
+                    Cada landing que construyo es una oportunidad para que un negocio escale su presencia digital y para que yo siga creciendo como desarrollador.
+                </p>
+                
+
+            </div>
+        </div>
     </div>
+ <script>
+        import { gsap } from 'gsap';
+        const container = document.getElementById('stack');
+        const cards = document.querySelectorAll('.card');
+        const clickIndicator = document.getElementById('clickIndicator');
+        
+        let current = 1;
+        let isAnimating = false;
+        const totalCards = cards.length;
 
-    <!-- CARD 2 -->
-    <div class="w-[170px] h-[260px] rounded-xl overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition duration-500"
-         style="transform: translateY(15px) rotateY(-12deg);">
-      <img src="/img/about2.jpg" class="w-full h-full object-cover" />
-    </div>
+        // Animación del indicador de click
+        gsap.to(clickIndicator, {
+            y: -5,
+            duration: 0.8,
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut"
+        });
 
-    <!-- CARD 3 (CENTRAL) -->
-    <div class="w-[170px] h-[260px] rounded-xl overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition duration-500"
-         style="transform: translateY(0px) rotateY(0deg);">
-      <img src="/img/about3.jpg" class="w-full h-full object-cover" />
-    </div>
+        // Función para reiniciar el stack automáticamente
+        function resetStack() {
+            isAnimating = true;
 
-    <!-- CARD 4Loading, please wait...
+            // Reiniciar todas las cartas
+            cards.forEach((card, index) => {
+                const layer = parseInt(card.dataset.layer);
+                const offset = (layer - 1) * 8;
+                const scale = 1 - (layer - 1) * 0.02;
+                
+                card.style.pointerEvents = 'auto';
+                card.style.zIndex = totalCards - layer + 1;
+                
+                gsap.fromTo(card,
+                    { y: -80, opacity: 0, scale: 0.9 },
+                    { 
+                        y: offset,
+                        opacity: 1,
+                        scale: scale,
+                        duration: 0.6,
+                        delay: index * 0.1,
+                        ease: "back.out(1.5)"
+                    }
+                );
+            });
 
- -->
-    <div class="w-[170px] h-[260px] rounded-xl overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition duration-500"
-         style="transform: translateY(15px) rotateY(12deg);">
-      <img src="/img/about4.jpg" class="w-full h-full object-cover" />
-    </div>
+            setTimeout(() => {
+                current = 1;
+                isAnimating = false;
+            }, 800);
+        }
 
-    <!-- CARD 5 -->
-    <div class="w-[170px] h-[260px] rounded-xl overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition duration-500"
-         style="transform: translateY(30px) rotateY(20deg);">
-      <img src="/img/about5.jpg" class="w-full h-full object-cover" />
-    </div>
+        // Click en el stack
+        container.addEventListener('click', (e) => {
+            if (isAnimating) return;
 
-  </div>
+            // Si ya se mostraron todas, reiniciar automáticamente
+            if (current > totalCards) {
+                resetStack();
+                return;
+            }
 
-  <!-- TEXTO -->
-  <div class="mt-14 text-center px-6">
-    <h2 class="text-4xl md:text-5xl font-semibold text-white">Hi, I'm Cristhian</h2>
+            isAnimating = true;
+            
+            const currentCard = document.querySelector(`[data-layer="${current}"]`);
+            if (!currentCard) return;
 
-    <p class="text-gray-300 mt-4 max-w-xl mx-auto">
-      I’m a <span class="text-white font-semibold">Frontend Developer & UI/UX enthusiast</span> 
-      focused on building modern, visual and fast digital experiences.
-    </p>
+            // Animar la carta actual hacia arriba
+            gsap.to(currentCard, {
+                y: -80,
+                opacity: 0,
+                scale: 0.9,
+                duration: 0.6,
+                ease: "power3.inOut",
+                onComplete: () => {
+                    currentCard.style.pointerEvents = 'none';
+                    
+                    // Si llegamos a la última carta, reiniciar automáticamente después de 0.5s
+                    if (current >= totalCards) {
+                        setTimeout(() => {
+                            resetStack();
+                        }, 500);
+                    } else {
+                        isAnimating = false;
+                    }
+                }
+            });
 
-    <p class="text-gray-400 text-sm mt-3 max-w-xl mx-auto">
-      Previously helping small businesses bring their ideas to life with clean and impactful interfaces.
-    </p>
-  </div>
-
-</div>
+            current++;
+        });
+    </script>
