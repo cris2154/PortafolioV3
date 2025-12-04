@@ -11,7 +11,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
 
       <!-- CARD 1 -->
-      <div class="bg-[#1a1a1a] rounded-3xl p-8 border border-white/5 shadow-[0px_0px_40px_rgba(0,0,0,0.3)]">
+      <div class="work-card bg-[#1a1a1a] rounded-3xl p-8 border border-white/5 shadow-[0px_0px_40px_rgba(0,0,0,0.3)] transition-transform duration-300">
         
         <p class="uppercase tracking-wider text-gray-400 text-sm mb-3">
           web
@@ -29,14 +29,14 @@
                class="w-full h-48 object-cover" />
         </div>
 
-        <a href="/proyectos/visability"
+        <a href="/proyectos/dental-clinic"
            class="block text-center bg-[#2a2a2a] hover:bg-[#333] transition rounded-xl py-3 font-semibold">
-          Check it out
+          ver mas 
         </a>
       </div>
 
       <!-- CARD 2 -->
-      <div class="bg-[#1a1a1a] rounded-3xl p-8 border border-white/5 shadow-[0px_0px_40px_rgba(0,0,0,0.3)]">
+      <div class="work-card bg-[#1a1a1a] rounded-3xl p-8 border border-white/5 shadow-[0px_0px_40px_rgba(0,0,0,0.3)] transition-transform duration-300">
         
         <p class="uppercase tracking-wider text-gray-400 text-sm mb-3">
           Web
@@ -53,14 +53,14 @@
                class="w-full h-48 object-cover" />
         </div>
 
-        <a href="/proyectos/color-synth"
+        <a href="/proyectos/m-restaurant"
            class="block text-center bg-[#2a2a2a] hover:bg-[#333] transition rounded-xl py-3 font-semibold">
-          Check it out
+          Ver mas 
         </a>
       </div>
 
       <!-- CARD 3 -->
-      <div class="bg-[#1a1a1a] rounded-3xl p-8 border border-white/5 shadow-[0px_0px_40px_rgba(0,0,0,0.3)]">
+      <div class="work-card bg-[#1a1a1a] rounded-3xl p-8 border border-white/5 shadow-[0px_0px_40px_rgba(0,0,0,0.3)] transition-transform duration-300">
         
         <p class="uppercase tracking-wider text-gray-400 text-sm mb-3">
           muy pronto
@@ -73,14 +73,14 @@
         </p>
 
         <div class="rounded-xl overflow-hidden mb-8">
-          <img src=""
-               class="w-full h-48 object-cover bg-neutral-100" />
+          <img src="ejemplo1.webp"
+               class="w-full h-48 object-cover" />
         </div>
 
         
         <button 
-                class="block text-center bg-[#2a2a2a] text-gray-500 rounded-xl py-3 font-semibold cursor-not-allowed">
-          Coming soon
+                class="block w-full text-center bg-[#2a2a2a] text-gray-500 rounded-xl py-3 font-semibold cursor-not-allowed">
+          Proximamente
         </button>
       </div>
 
@@ -89,3 +89,23 @@
   </div>
   </div>
 </section>
+
+<style>
+.work-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.work-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.work-card:hover img {
+  transform: scale(1.03);
+}
+
+.work-card img {
+  transition: transform 0.4s ease;
+}
+</style>
