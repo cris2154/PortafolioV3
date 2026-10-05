@@ -1,0 +1,77 @@
+---
+/**
+ * Renderiza el campo de texto enriquecido («Blocks») de Strapi.
+ * Soporta párrafos, títulos, listas, citas y enlaces con negrita/cursiva/código.
+ */
+import type { Block, BlockInlineNode } from '../../service';
+
+interface Props {
+  blocks: Block[] | null | undefined;
+  /** Clases para cada párrafo, para heredar el estilo de cada sección. */
+  paragraphClass?: string;
+}
+
+const { blocks, paragraphClass = '' } = Astro.props;
+
+/** Texto plano de un conjunto de nodos (para títulos, listas, citas y código). */
+const plain = (nodes: BlockInlineNode[]) =>
+  nodes.map((n) => (n.type === 'text' ? n.text : n.children.map((c) => c.text).join(''))).join('');
+---
+
+{
+  (blocks ?? []).map((block) => {
+    switch (block.type) {
+      case 'heading': {
+        const Tag = `h${Math.min(Math.max(block.level + 1, 2), 6)}` as 'h2';
+        return <Tag class="text-lg sm:text-2xl font-semibold text-gray-900">{plain(block.children)}</Tag>;
+      }
+      case 'list': {
+        const Tag = block.format === 'ordered' ? 'ol' : 'ul';
+        const marker = block.format === 'ordered' ? 'list-decimal' : 'list-disc';
+        return (
+          <Tag class={`${marker} pl-5 space-y-1 text-left ${paragraphClass}`}>
+            {block.children.map((item) => <li>{plain(item.children)}</li>)}
+          </Tag>
+        );
+      }
+      case 'quote':
+        return (
+          <blockquote class={`border-l-2 border-orange-500 pl-4 italic ${paragraphClass}`}>
+            {plain(block.children)}
+          </blockquote>
+        );
+      case 'code':
+        return (
+          <pre class="bg-gray-100 rounded-xl p-4 text-left text-sm text-gray-800 overflow-x-auto">
+            <code>{plain(block.children)}</code>
+          </pre>
+        );
+      default:
+        return (
+          <p class={paragraphClass}>
+            {block.children.map((node) => {
+              if (node.type === 'link') {
+                return (
+                  <a
+                    href={node.url}
+                    class="underline decoration-orange-400 underline-offset-4 hover:text-orange-600"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {node.children.map((c) => c.text)}
+                  </a>
+                );
+              }
+              let content: any = node.text;
+              if (node.code) content = <code class="px-1.5 py-0.5 rounded bg-gray-100 text-gray-800 text-sm">{content}</code>;
+              if (node.bold) content = <strong class="font-semibold text-gray-900">{content}</strong>;
+              if (node.italic) content = <em>{content}</em>;
+              if (node.underline) content = <u>{content}</u>;
+              if (node.strikethrough) content = <s>{content}</s>;
+              return content;
+            })}
+          </p>
+        );
+    }
+  })
+}

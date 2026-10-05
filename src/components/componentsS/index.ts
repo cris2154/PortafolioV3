@@ -1,0 +1,12 @@
+export { default as Nav } from './Nav.astro';
+export { default as Hero } from './Hero.astro';
+export { default as About } from './About.astro';
+export { default as Hability } from './Hability.astro';
+export { default as Experience } from './Experience.astro';
+export { default as Work } from './Work.astro';
+export { default as Works } from './Work.astro';
+export { default as Red } from './Red.astro';
+export { default as Preguntas } from './Preguntas.astro';
+export { default as Final } from './Final.astro';
+export { default as SocialIcon } from './SocialIcon.astro';
+export { default as Blocks } from './Blocks.astro';

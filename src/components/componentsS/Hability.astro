@@ -1,0 +1,247 @@
+---
+import type { Habilidad } from '../../service';
+import { getHabilidades, getMediaUrl } from '../../service';
+import { formatMonthYear, humanize } from '../../utils/text';
+
+interface Props {
+  habilidades?: Habilidad[];
+}
+
+const { habilidades: propHabilidades } = Astro.props;
+let habilidades: Habilidad[] = [];
+
+if (Array.isArray(propHabilidades) && propHabilidades.length > 0) {
+  habilidades = propHabilidades;
+} else {
+  try {
+    habilidades = await getHabilidades();
+  } catch (e) {
+    console.error('Error cargando habilidades:', e);
+    habilidades = [];
+  }
+}
+
+// Separar en: Habilidades (no certificadas) y Certificaciones (certificadas)
+const habilidadesNormales = habilidades.filter((h) => !h.es_certificada);
+const certificaciones = habilidades.filter((h) => h.es_certificada);
+
+// Configuración de metadata de categorías
+interface CategoriaMeta {
+  titulo: string;
+  badge: string;
+}
+
+const CATEGORIAS_CONFIG: Record<string, CategoriaMeta> = {
+  frontend: { titulo: 'Frontend', badge: 'UI / UX' },
+  backend: { titulo: 'Backend & APIs', badge: 'Core' },
+  bases_de_datos: { titulo: 'Bases de Datos', badge: 'Datos' },
+  devops_cloud: { titulo: 'Cloud & DevOps', badge: 'Infra' },
+  mobile: { titulo: 'Mobile', badge: 'Apps' },
+  herramientas: { titulo: 'Herramientas', badge: 'Workflow' },
+};
+
+// Categorías únicas de habilidades normales
+const categoriasPresentes = Array.from(
+  new Set(habilidadesNormales.map((h) => h.categoria || 'otros')),
+);
+
+const ordenDeseado = [
+  'frontend',
+  'backend',
+  'devops_cloud',
+  'bases_de_datos',
+  'mobile',
+  'herramientas',
+];
+
+const categoriasOrdenadas = [
+  ...ordenDeseado.filter((cat) => categoriasPresentes.includes(cat)),
+  ...categoriasPresentes.filter((cat) => !ordenDeseado.includes(cat)),
+];
+
+const grupos = categoriasOrdenadas.map((cat) => ({
+  categoria: cat,
+  meta: CATEGORIAS_CONFIG[cat] ?? {
+    titulo: humanize(cat),
+    badge: humanize(cat),
+  },
+  items: habilidadesNormales.filter((h) => (h.categoria || 'otros') === cat),
+}));
+---
+
+<section
+  id="hability"
+  class="w-full bg-white flex flex-col justify-center items-center py-10 sm:py-14 lg:py-16 relative"
+>
+  <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 space-y-8 sm:space-y-12">
+    
+    <!-- CONTENEDOR 1: CERTIFICACIONES (PRIMERO) -->
+    {certificaciones.length > 0 && (
+      <div
+        class="certifications-container w-full bg-white rounded-3xl lg:rounded-[36px] border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] p-6 sm:p-10 lg:p-12 xl:p-14 relative"
+      >
+        <div class="grid grid-cols-1 md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] gap-8 md:gap-16 items-start">
+          
+          <!-- Título Izquierda -->
+          <div>
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">
+              Certificaciones
+            </h2>
+            <p class="text-xs sm:text-sm text-gray-400 mt-1.5 leading-relaxed">
+              Acreditaciones profesionales validadas por entidades tecnológicas.
+            </p>
+          </div>
+
+          <!-- Contenido Derecha: Grid de Certificaciones -->
+          <div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {certificaciones.map((cert) => {
+                const certIcon = getMediaUrl(cert.icono, 'thumbnail');
+                return (
+                  <div class="p-4 sm:p-5 rounded-2xl bg-gray-50/80 border border-gray-100 shadow-xs flex flex-col justify-between gap-3 hover:bg-white hover:border-orange-200 hover:shadow-md transition-all group">
+                    <div class="flex items-start gap-3.5">
+                      {certIcon ? (
+                        <img src={certIcon} alt="" class="w-11 h-11 rounded-xl object-contain shrink-0 bg-white p-1.5 border border-gray-100" loading="lazy" />
+                      ) : (
+                        <div class="w-11 h-11 shrink-0 rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 text-white flex items-center justify-center font-bold text-base shadow-sm">
+                          {cert.nombre.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div class="min-w-0 flex-1">
+                        <h4 class="text-sm sm:text-base font-bold text-gray-900 leading-snug group-hover:text-orange-600 transition-colors">
+                          {cert.nombre}
+                        </h4>
+                        {cert.institucion_emisora && (
+                          <p class="text-xs font-medium text-gray-500 mt-1">
+                            {cert.institucion_emisora}
+                          </p>
+                        )}
+                        {cert.fecha_emision && (
+                          <p class="text-[11px] text-gray-400 mt-0.5">
+                            Emitida: {formatMonthYear(cert.fecha_emision)}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {cert.enlace_credencial && (
+                      <a
+                        href={cert.enlace_credencial}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="inline-flex items-center gap-1.5 text-xs font-semibold text-orange-600 hover:text-orange-700 underline underline-offset-4 pt-1 transition-colors self-start"
+                      >
+                        <span>Ver credencial oficial</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    )}
+
+    <!-- CONTENEDOR 2: HABILIDADES (SEGUNDO) -->
+    <div
+      class="skills-container w-full bg-white rounded-3xl lg:rounded-[36px] border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] p-6 sm:p-10 lg:p-12 xl:p-14 relative"
+    >
+      <div class="grid grid-cols-1 md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] gap-8 md:gap-16 items-start">
+        
+        <!-- Título Izquierda -->
+        <div>
+          <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">
+            Habilidades
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-400 mt-1.5 leading-relaxed">
+            Stack tecnológico organizado por especialidad.
+          </p>
+        </div>
+
+        <!-- Contenido Derecha: Categorías y Tecnologías -->
+        <div class="space-y-7 divide-y divide-gray-100 [&>*:not(:first-child)]:pt-7">
+          {grupos.map((grupo) => (
+            <div class="space-y-3.5">
+              <!-- Encabezado de la categoría -->
+              <div class="flex items-center gap-2.5">
+                <span class="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_6px_#f97316]"></span>
+                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-800">
+                  {grupo.meta.titulo}
+                </h3>
+                <span class="category-badge text-[11px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 ml-auto sm:ml-0">
+                  {grupo.meta.badge}
+                </span>
+              </div>
+
+              <!-- Lista de tecnologías -->
+              <div class="flex flex-wrap gap-2.5">
+                {grupo.items.map((skill) => {
+                  const icon = getMediaUrl(skill.icono, 'thumbnail');
+                  return (
+                    <div class="skill-pill inline-flex items-center gap-2.5 px-3.5 py-2 rounded-2xl bg-gray-50/90 border border-gray-100/90 shadow-2xs hover:bg-white hover:border-orange-300 hover:shadow-sm transition-all duration-200 group/item">
+                      {icon ? (
+                        <img src={icon} alt="" class="w-5 h-5 rounded object-contain shrink-0" loading="lazy" />
+                      ) : (
+                        <span class="skill-initials w-5 h-5 shrink-0 rounded bg-gray-900 text-white flex items-center justify-center text-[10px] font-bold">
+                          {skill.nombre.slice(0, 2).toUpperCase()}
+                        </span>
+                      )}
+                      <span class="skill-name text-sm font-semibold text-gray-800 group-hover/item:text-orange-600 transition-colors">
+                        {skill.nombre}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const certsContainer = document.querySelector(".certifications-container");
+  if (certsContainer) {
+    gsap.from(".certifications-container", {
+      scrollTrigger: {
+        trigger: ".certifications-container",
+        start: "top 90%",
+        once: true,
+      },
+      y: 25,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      clearProps: "all",
+    });
+  }
+
+  const skillsContainer = document.querySelector(".skills-container");
+  if (skillsContainer) {
+    gsap.from(".skills-container", {
+      scrollTrigger: {
+        trigger: ".skills-container",
+        start: "top 90%",
+        once: true,
+      },
+      y: 25,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      clearProps: "all",
+    });
+  }
+</script>

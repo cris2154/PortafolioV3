@@ -1,0 +1,337 @@
+---
+import { getConfiguracionGlobal, getMediaUrl, getPerfil } from "../../service";
+import SocialIcon from "./SocialIcon.astro";
+
+const [perfil, config] = await Promise.all([
+    getPerfil(),
+    getConfiguracionGlobal(),
+]);
+const avatar = getMediaUrl(perfil.avatar_foto, "medium");
+const redes = config.redes_sociales ?? [];
+---
+
+<section
+    id="top"
+    class="w-full min-h-screen bg-white flex flex-col justify-center items-center relative overflow-hidden py-20 lg:py-0"
+>
+    <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 lg:py-16">
+        <!-- CONTENEDOR 2D QUE ENGLOBA TODO EN PC -->
+        <div
+            class="hero-container w-full lg:bg-white lg:rounded-[36px] lg:border lg:border-gray-100 lg:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] lg:p-10 xl:p-14 relative"
+        >
+            <div class="grid gap-10 lg:grid-cols-2 items-center">
+                <!-- TARJETA DE PERFIL (IZQUIERDA) -->
+                <div class="flex justify-center lg:justify-start items-center">
+                    <div
+                        class="hero-card bg-white rounded-3xl p-6 sm:p-8 shadow-xl max-w-sm w-full border border-gray-100 flex flex-col items-center text-center relative"
+                    >
+                        <!-- Estado / Disponibilidad -->
+                        <div
+                            class="flex items-center justify-center gap-2 mb-6 w-full"
+                        >
+                            <div
+                                class={`w-3 h-3 rounded-full ${config.disponible_para_trabajar ? "bg-orange-500 shadow-[0_0_10px_#f97316] animate-pulse" : "bg-gray-300"}`}
+                            >
+                            </div>
+                            <span class="text-sm text-gray-600 font-medium">
+                                {
+                                    config.disponible_para_trabajar
+                                        ? "Disponible para trabajar"
+                                        : "No disponible por ahora"
+                                }
+                            </span>
+                        </div>
+
+                        <!-- Avatar Animado con Aura Naranja/Blanco -->
+                        <div
+                            class="mb-6 flex justify-center items-center w-full relative"
+                        >
+                            <div
+                                class="avatar-glow absolute w-24 h-24 rounded-2xl bg-gradient-to-tr from-orange-500/10 via-amber-700/30 to-white/70 blur-xl opacity-40 animate-pulse pointer-events-none"
+                            >
+                            </div>
+
+                            <div
+                                class="avatar-box w-24 h-24 rounded-2xl overflow-hidden shadow-md border-2 border-none relative cursor-pointer group"
+                            >
+                                {
+                                    avatar ? (
+                                        <img
+                                            src={avatar}
+                                            alt={
+                                                perfil.avatar_foto
+                                                    ?.alternativeText ??
+                                                config.nombre_sitio
+                                            }
+                                            width={
+                                                perfil.avatar_foto?.width ??
+                                                undefined
+                                            }
+                                            height={
+                                                perfil.avatar_foto?.height ??
+                                                undefined
+                                            }
+                                            class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
+                                        />
+                                    ) : (
+                                        <div class="w-full h-full bg-gradient-to-br from-orange-500 via-amber-500 to-orange-400 flex items-center justify-center text-white font-bold text-2xl shadow-inner">
+                                            {config.nombre_sitio
+                                                ?.slice(0, 2)
+                                                .toUpperCase() ?? "PD"}
+                                        </div>
+                                    )
+                                }
+                                <div
+                                    class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/25 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                                >
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Título y Ubicación -->
+                        <div class="mb-6 w-full text-center">
+                            <h2
+                                class="hero-name text-2xl font-bold text-gray-900 mb-1 tracking-tight transition-colors duration-300 hover:text-orange-500 cursor-default"
+                            >
+                                {config.nombre_sitio}
+                            </h2>
+                            {
+                                perfil.ubicacion && (
+                                    <p class="hero-location text-gray-500 text-sm flex items-center justify-center gap-1.5 font-medium">
+                                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                                        <span>{perfil.ubicacion}</span>
+                                    </p>
+                                )
+                            }
+                        </div>
+
+                        <!-- Redes Sociales con Tooltip y Animación Flotante (sin rotación) -->
+                        <div
+                            id="logosredes"
+                            class="flex justify-center items-center gap-3 w-full flex-wrap pt-1 relative z-20"
+                        >
+                            {
+                                redes.map((red) => {
+                                    const etiqueta =
+                                        red.etiqueta ||
+                                        (red.red
+                                            ? red.red.charAt(0).toUpperCase() +
+                                              red.red.slice(1)
+                                            : "Enlace");
+                                    const redKey = (
+                                        red.red ?? ""
+                                    ).toLowerCase();
+
+                                    const hoverStyles =
+                                        redKey === "github"
+                                            ? "hover:bg-gray-900 hover:text-white hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)]"
+                                            : redKey === "linkedin"
+                                              ? "hover:bg-[#0a66c2] hover:text-white hover:shadow-[0_8px_20px_rgba(10,102,194,0.4)]"
+                                              : redKey === "twitter_x" ||
+                                                  redKey === "x" ||
+                                                  redKey === "twitter"
+                                                ? "hover:bg-black hover:text-white hover:shadow-[0_8px_20px_rgba(0,0,0,0.3)]"
+                                                : redKey === "correo"
+                                                  ? "hover:bg-orange-500 hover:text-white hover:shadow-[0_8px_20px_rgba(249,115,22,0.45)]"
+                                                  : redKey.includes("insta")
+                                                    ? "hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:text-white hover:shadow-[0_8px_20px_rgba(225,48,108,0.45)]"
+                                                    : "hover:bg-orange-500 hover:text-white hover:shadow-[0_8px_20px_rgba(249,115,22,0.4)]";
+
+                                    return (
+                                        <div class="social-item relative group/tooltip flex items-center justify-center">
+                                            <a
+                                                href={red.url}
+                                                target={
+                                                    red.red === "correo"
+                                                        ? undefined
+                                                        : "_blank"
+                                                }
+                                                rel="noreferrer"
+                                                class={`social-btn w-10 h-10 flex items-center justify-center rounded-full bg-gray-100/90 text-gray-700 transition-all duration-300 transform-gpu hover:-translate-y-1.5 hover:scale-110 active:scale-95 shadow-sm ${hoverStyles}`}
+                                                aria-label={etiqueta}
+                                            >
+                                                <SocialIcon
+                                                    red={red.red}
+                                                    class="w-5 h-5 transition-transform duration-300"
+                                                />
+                                            </a>
+                                            <span class="pointer-events-none absolute -top-8 px-2.5 py-1 text-[11px] font-medium text-white bg-gray-900/90 backdrop-blur-sm rounded-md shadow-md opacity-0 group-hover/tooltip:opacity-100 transition-all duration-200 -translate-y-1 group-hover/tooltip:-translate-y-2 whitespace-nowrap z-40">
+                                                {etiqueta}
+                                            </span>
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTENIDO HERO (DERECHA) -->
+                <div
+                    class="hero-copy space-y-6 sm:space-y-8 max-w-2xl mx-auto lg:mx-0 text-center lg:text-left flex flex-col justify-center"
+                >
+                    <div class="space-y-3">
+                        <h1
+                            class="hero-title text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-gray-900"
+                        >
+                            {perfil.titular_hero}
+                        </h1>
+
+                        {
+                            perfil.anios_experiencia != null && (
+                                <div class="hero-pill inline-flex flex-wrap items-center justify-center lg:justify-start gap-3">
+                                    <span class="text-2xl sm:text-3xl lg:text-4xl font-bold">
+                                        con{" "}
+                                    </span>
+                                    <span class="hero-years-badge inline-flex items-center bg-gray-900 text-white px-5 py-3 sm:px-7 sm:py-4 rounded-full text-lg sm:text-2xl lg:text-3xl font-bold border border-transparent shadow-sm">
+                                        {perfil.anios_experiencia}+ años de
+                                        experiencia
+                                    </span>
+                                </div>
+                            )
+                        }
+
+                        {
+                            perfil.ubicacion && (
+                                <div class="hero-country flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xl sm:text-2xl lg:text-4xl font-bold">
+                                    <span>desde</span>
+                                    <span class="hero-location-badge inline-flex items-center gap-2 bg-white text-gray-900 px-5 py-3 rounded-full shadow-md border border-gray-100">
+                                        <span class="text-lg sm:text-xl lg:text-2xl font-bold">
+                                            {perfil.ubicacion}
+                                        </span>
+                                    </span>
+                                </div>
+                            )
+                        }
+                    </div>
+
+                    {
+                        perfil.subtitulo_hero && (
+                            <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
+                                {perfil.subtitulo_hero}
+                            </p>
+                        )
+                    }
+
+                    <!-- BOTÓN SIMÉTRICO DENTRO DE SU PADRE -->
+                    <div
+                        id="boton"
+                        class="flex justify-center lg:justify-start items-center w-full pt-2"
+                    >
+                        <a
+                            href="#work"
+                            class="opacity-100 hero-cta inline-flex items-center gap-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold pl-7 sm:pl-8 pr-3 sm:pr-3.5 py-3 sm:py-3.5 rounded-full text-base sm:text-lg transition-all shadow-[0_8px_25px_rgba(249,115,22,0.35)] hover:shadow-[0_12px_30px_rgba(249,115,22,0.5)] hover:scale-105 group"
+                        >
+                            Más sobre mí
+                            <span
+                                class="w-9 h-9 sm:w-10 sm:h-10 bg-white text-orange-500 rounded-full flex items-center justify-center group-hover:rotate-45 transition-transform shadow-sm"
+                            >
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2.2"
+                                        d="M7 17L17 7M17 7H7M17 7V17"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .avatar-box {
+        will-change: transform;
+    }
+</style>
+
+<script>
+    import gsap from "gsap";
+
+    // Microinteracción al pasar el mouse por el avatar
+    const avatarBox = document.querySelector<HTMLElement>(".avatar-box");
+    const avatarGlow = document.querySelector<HTMLElement>(".avatar-glow");
+
+    if (avatarBox) {
+        avatarBox.addEventListener("mouseenter", () => {
+            gsap.to(avatarBox, {
+                scale: 1.08,
+                duration: 0.3,
+                ease: "power2.out",
+            });
+            if (avatarGlow) {
+                gsap.to(avatarGlow, {
+                    opacity: 0.7,
+                    scale: 1.2,
+                    duration: 0.3,
+                });
+            }
+        });
+
+        avatarBox.addEventListener("mouseleave", () => {
+            gsap.to(avatarBox, {
+                scale: 1,
+                duration: 0.3,
+                ease: "power2.out",
+            });
+            if (avatarGlow) {
+                gsap.to(avatarGlow, {
+                    opacity: 0.4,
+                    scale: 1,
+                    duration: 0.3,
+                });
+            }
+        });
+    }
+
+    // Línea de tiempo de entrada coordinada
+    const tl = gsap.timeline({
+        defaults: { ease: "power3.out", duration: 0.7 },
+    });
+    tl.from(".hero-container", { y: 25, opacity: 0, duration: 0.8 })
+        .from(".hero-card", { y: 20, opacity: 0, duration: 0.6 }, "-=0.5")
+        .from(
+            ".avatar-box",
+            {
+                scale: 0.3,
+                opacity: 0,
+                ease: "back.out(1.8)",
+                duration: 0.6,
+            },
+            "-=0.4",
+        )
+        .from(".hero-name", { y: 12, opacity: 0, duration: 0.4 }, "-=0.35")
+        .from(".hero-location", { y: 10, opacity: 0, duration: 0.35 }, "-=0.3")
+        .from(
+            "#logosredes .social-item",
+            {
+                scale: 0,
+                y: 12,
+                opacity: 0,
+                stagger: 0.06,
+                ease: "back.out(2)",
+                duration: 0.45,
+            },
+            "-=0.25",
+        )
+        .from(".hero-title", { y: 25, opacity: 0 }, "-=0.4")
+        .from(".hero-pill", { y: 20, opacity: 0 }, "-=0.45")
+        .from(".hero-country", { y: 20, opacity: 0 }, "-=0.45")
+        .from(".hero-copy p", { y: 15, opacity: 0 }, "-=0.4");
+
+    gsap.from("#boton", {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+        delay: 0.8,
+    });
+</script>

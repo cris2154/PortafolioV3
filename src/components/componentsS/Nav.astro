@@ -1,0 +1,234 @@
+---
+import { getConfiguracionGlobal, getMediaUrl } from '../../service';
+
+const config = await getConfiguracionGlobal();
+const cvUrl = getMediaUrl(config.curriculum_pdf);
+
+// Extraer correo e Instagram dinámicos de Strapi con fallbacks
+const redes = config.redes_sociales ?? [];
+const instagram = redes.find((r) => r.red && r.red.toLowerCase().includes('insta'))?.url || 'https://www.instagram.com';
+
+// Nombre a mostrar en el logo
+const nombre =
+  config.nombre_sitio && config.nombre_sitio !== 'Portafolio Dev (datos de prueba)'
+    ? config.nombre_sitio
+    : 'Cristhian Huamani';
+---
+
+<header class="fixed top-5 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50">
+  <nav class="nav-shell bg-white/95 backdrop-blur-md rounded-full shadow-[0_4px_25px_rgba(0,0,0,0.06)] px-5 sm:px-8 py-3 sm:py-3.5 flex items-center justify-between border border-gray-100 transition-all">
+    
+    <!-- LADO IZQUIERDO: Ícono sonriente naranja + Nombre en naranja -->
+    <a href="#top" class="nav-brand flex items-center gap-2.5 group">
+      <!-- Ícono doodle sonriente naranja -->
+      <span class="w-8 h-8 flex items-center justify-center text-orange-500 transition-transform group-hover:scale-110">
+        <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Silueta con ondas superiores estilo cabello/nube -->
+          <path d="M4.5 13C3.8 9.5 5.5 6 9 6.5C10 4 14 4 15 6.5C18.5 6 20.2 9.5 19.5 13C18.5 18 15.5 20 12 20C8.5 20 5.5 18 4.5 13Z" />
+          <!-- Ojos sonrientes -->
+          <path d="M8.8 11.8C9.3 11.2 10.1 11.2 10.6 11.8" />
+          <path d="M13.4 11.8C13.9 11.2 14.7 11.2 15.2 11.8" />
+          <!-- Sonrisa -->
+          <path d="M9.8 15.2C10.8 16.5 13.2 16.5 14.2 15.2" />
+        </svg>
+      </span>
+      <span class="font-bold text-orange-500 text-base sm:text-lg tracking-tight hover:opacity-90">
+        {nombre}
+      </span>
+    </a>
+
+    <!-- CENTRO: Enlaces de navegación -->
+    <div class="nav-links hidden md:flex items-center gap-6">
+      <a href="#about" class="text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Sobre mí</a>
+      <a href="#work" class="text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Trabajos</a>
+      <a href="#hability" class="text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Habilidades</a>
+      <a href="#final" class="text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Contacto</a>
+    </div>
+
+    <!-- LADO DERECHO: Modo oscuro + Instagram + Menú Móvil -->
+    <div class="flex items-center gap-3.5 sm:gap-6">
+      <!-- Botón de Modo Oscuro -->
+      <button
+        type="button"
+        id="theme-toggle"
+        class="theme-toggle w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-gray-600 hover:text-orange-500 hover:bg-orange-50/70 transition-all cursor-pointer"
+        aria-label="Alternar modo oscuro"
+        title="Modo oscuro"
+      >
+        <!-- Icono Luna (Modo claro) -->
+        <svg class="w-5 h-5 moon-icon transition-transform hover:-rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <!-- Icono Sol (Modo oscuro) -->
+        <svg class="w-5 h-5 sun-icon hidden transition-transform hover:rotate-45 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+      </button>
+
+      <!-- Ícono de Instagram -->
+      <a
+        href={instagram}
+        target="_blank"
+        rel="noreferrer"
+        class="w-6 h-6 flex items-center justify-center text-gray-700 hover:text-orange-500 transition-transform hover:scale-110"
+        aria-label="Instagram"
+      >
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+      </a>
+
+      <!-- Botón móvil burger animado con GSAP -->
+      <button
+        id="nav-toggle"
+        class="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-1.5 focus:outline-none text-gray-700 hover:text-orange-500 transition-colors cursor-pointer"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+      >
+        <span class="bar-1 w-5 h-0.5 bg-current rounded-full origin-center"></span>
+        <span class="bar-2 w-5 h-0.5 bg-current rounded-full"></span>
+        <span class="bar-3 w-5 h-0.5 bg-current rounded-full origin-center"></span>
+      </button>
+    </div>
+
+  </nav>
+
+  <!-- MENÚ MÓVIL DESPLEGABLE CON GSAP -->
+  <div
+    id="mobile-menu"
+    class="md:hidden mt-2 bg-white/95 backdrop-blur-md rounded-3xl shadow-xl border border-gray-100 p-5 overflow-hidden origin-top"
+    style="display: none; opacity: 0;"
+  >
+    <div class="flex flex-col gap-2.5 text-center">
+      <a href="#about" class="mobile-item text-sm font-medium text-gray-700 py-2.5 rounded-2xl hover:bg-orange-50 hover:text-orange-500 transition-colors">Sobre mí</a>
+      <a href="#work" class="mobile-item text-sm font-medium text-gray-700 py-2.5 rounded-2xl hover:bg-orange-50 hover:text-orange-500 transition-colors">Trabajos</a>
+      <a href="#hability" class="mobile-item text-sm font-medium text-gray-700 py-2.5 rounded-2xl hover:bg-orange-50 hover:text-orange-500 transition-colors">Habilidades</a>
+      <a href="#final" class="mobile-item text-sm font-medium text-gray-700 py-2.5 rounded-2xl hover:bg-orange-50 hover:text-orange-500 transition-colors">Contacto</a>
+      {cvUrl && (
+        <a href={cvUrl} target="_blank" rel="noreferrer" class="mobile-item text-sm font-semibold text-orange-500 py-2.5 border border-orange-200 rounded-2xl hover:bg-orange-500 hover:text-white transition-colors">
+          Descargar CV
+        </a>
+      )}
+    </div>
+  </div>
+</header>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+  gsap.registerPlugin(ScrollToPlugin);
+
+  const initNav = () => {
+    const toggle = document.getElementById('nav-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-links a, #mobile-menu a');
+    if (!toggle || !menu) return;
+
+    let isOpen = false;
+
+    // Timeline GSAP para apertura/cierre del menú móvil y transformación de las barras a "X"
+    const tl = gsap.timeline({
+      paused: true,
+      onReverseComplete: () => {
+        gsap.set(menu, { display: 'none' });
+      }
+    });
+
+    tl.to('#nav-toggle .bar-1', { y: 8, rotate: 45, duration: 0.28, ease: 'power2.inOut' }, 0)
+      .to('#nav-toggle .bar-2', { opacity: 0, x: -8, duration: 0.18, ease: 'power2.inOut' }, 0)
+      .to('#nav-toggle .bar-3', { y: -8, rotate: -45, duration: 0.28, ease: 'power2.inOut' }, 0)
+      .set(menu, { display: 'block' }, 0)
+      .fromTo(
+        menu,
+        { opacity: 0, y: -16, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'back.out(1.5)' },
+        0
+      )
+      .fromTo(
+        '.mobile-item',
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, stagger: 0.04, duration: 0.22, ease: 'power2.out' },
+        0.08
+      );
+
+    const toggleMenu = () => {
+      isOpen = !isOpen;
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      if (isOpen) {
+        tl.play();
+      } else {
+        tl.reverse();
+      }
+    };
+
+    toggle.addEventListener('click', toggleMenu);
+
+    // Smooth scroll con ScrollToPlugin
+    const scrollToTarget = (target: Element | null) => {
+      if (!target) return;
+      gsap.to(window, { duration: 0.8, scrollTo: { y: target, offsetY: 90 }, ease: "power2.inOut" });
+    };
+
+    navLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        // Cerrar cualquier modal que pudiera estar abierto
+        document.querySelectorAll<HTMLElement>('.experience-modal, .work-modal').forEach((m) => {
+          m.classList.remove('opacity-100', 'pointer-events-auto');
+          m.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+        });
+        document.body.style.overflow = '';
+
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          scrollToTarget(document.querySelector(href));
+        }
+        if (isOpen) {
+          isOpen = false;
+          toggle.setAttribute('aria-expanded', 'false');
+          tl.reverse();
+        }
+      });
+    });
+  };
+
+  // Inicialización de iconos de modo oscuro
+  const updateThemeIcons = (isDark: boolean) => {
+    document.querySelectorAll('.moon-icon').forEach((el) => {
+      el.classList.toggle('hidden', isDark);
+    });
+    document.querySelectorAll('.sun-icon').forEach((el) => {
+      el.classList.toggle('hidden', !isDark);
+    });
+  };
+
+  const syncTheme = () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    updateThemeIcons(isDark);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initNav();
+      syncTheme();
+    });
+  } else {
+    initNav();
+    syncTheme();
+  }
+
+  // Click global para el toggle de modo oscuro
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('.theme-toggle');
+    if (btn) {
+      e.preventDefault();
+      e.stopPropagation();
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      updateThemeIcons(isDark);
+    }
+  });
+</script>

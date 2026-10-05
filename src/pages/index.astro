@@ -1,25 +1,59 @@
 ---
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
 import Layout from '../layouts/Layout.astro';
-import Works from '../components/Work.astro';
-import Red from '../components/Red.astro';
-import Final from '../components/final.astro';
-import Hability from '../components/Hability.astro';
-import About from '../components/About.astro';
-import Preguntas from '../components/Preguntas.astro';
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import {
+	Nav,
+	Hero,
+	About,
+	Hability,
+	Experience,
+	Works,
+	Red,
+	Preguntas,
+	Final,
+} from '../components/componentsS';
+import {
+	getConfiguracionGlobal,
+	getPerfil,
+	getProyectos,
+	getHabilidades,
+	getPreguntasFrecuentes,
+	getExperiencias,
+} from '../service';
+
+const [config, perfil, proyectos, habilidades, preguntas, experiencias] = await Promise.all([
+	getConfiguracionGlobal().catch(() => null),
+	getPerfil().catch(() => null),
+	getProyectos().catch(() => []),
+	getHabilidades().catch(() => []),
+	getPreguntasFrecuentes().catch(() => []),
+	getExperiencias().catch(() => []),
+]);
+
+const strapiData = {
+	configuracionGlobal: config,
+	perfil,
+	proyectos,
+	habilidades,
+	preguntasFrecuentes: preguntas,
+	experiencias,
+};
 ---
 
 <Layout>
 	<Nav />
 	<Hero />
 	<About />
-	<Hability />
-	<Works />
-	<Red />
-	<Preguntas />
+	<Experience experiencias={experiencias} />
+	<Hability habilidades={habilidades} />
+	<Works proyectos={proyectos} />
 	<Final />
-	
+
+	<script is:inline define:vars={{ strapiData }}>
+		console.log('🚀 [Strapi Data en Navegador]:', strapiData);
+		console.log('📄 Perfil:', strapiData.perfil);
+		console.log('💼 Proyectos:', strapiData.proyectos);
+		console.log('⚡ Habilidades:', strapiData.habilidades);
+		console.log('❓ Preguntas Frecuentes:', strapiData.preguntasFrecuentes);
+		console.log('⚙️ Configuración Global:', strapiData.configuracionGlobal);
+	</script>
 </Layout>

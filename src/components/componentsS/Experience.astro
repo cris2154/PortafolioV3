@@ -1,0 +1,738 @@
+---
+import type { Experiencia } from '../../service';
+import { getConfiguracionGlobal, getExperiencias, getMediaUrl } from '../../service';
+import { formatMonthYear, humanize, markdownLite } from '../../utils/text';
+
+interface Props {
+  experiencias?: Experiencia[];
+}
+
+const { experiencias: propExperiencias } = Astro.props;
+let experiencias: Experiencia[] = [];
+
+if (Array.isArray(propExperiencias) && propExperiencias.length > 0) {
+  experiencias = propExperiencias;
+} else {
+  try {
+    experiencias = await getExperiencias();
+  } catch (e) {
+    console.error('Error cargando experiencias:', e);
+    experiencias = [];
+  }
+}
+
+const config = await getConfiguracionGlobal().catch(() => null);
+const correo = config?.correo_contacto || 'Crishuamani023@gmail.com';
+const redes = config?.redes_sociales ?? [];
+const instagram = redes.find((r) => r.red === 'instagran' || r.red === 'instagram')?.url || 'https://www.instagram.com';
+const nombre =
+  config?.nombre_sitio && config.nombre_sitio !== 'Portafolio Dev (datos de prueba)'
+    ? config.nombre_sitio
+    : 'Cristhian Huamani';
+---
+
+<section
+  id="experience"
+  class="w-full bg-white text-gray-900 py-16 sm:py-20 lg:py-24 relative overflow-hidden"
+>
+  <div class="w-full max-w-6xl mx-auto px-4 sm:px-6">
+    
+    <!-- CONTENEDOR GRANDE (IGUAL QUE HERO Y ABOUT) -->
+    <div
+      class="experience-container w-full bg-white rounded-3xl lg:rounded-[36px] border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] p-6 sm:p-10 lg:p-12 xl:p-14 relative"
+    >
+      
+      <!-- Encabezado de la Sección -->
+      <div class="experience-header mb-10 sm:mb-12">
+        
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
+          Experiencia Profesional
+        </h2>
+        <p class="text-gray-500 text-base sm:text-lg max-w-2xl mt-3 leading-relaxed">
+          Historial de roles desempeñados, responsabilidades técnicas y logros en empresas del sector tecnológico.
+        </p>
+      </div>
+
+      <!-- Lista de Experiencias -->
+      <div class="experience-list space-y-6 sm:space-y-8">
+        {experiencias.map((exp) => {
+          const mediaUrl = getMediaUrl(exp.logo_empresa);
+          const isVideo = exp.logo_empresa?.mime?.startsWith('video/') ?? false;
+          const fechaInicio = formatMonthYear(exp.fecha_inicio);
+          const fechaFin = exp.es_trabajo_actual ? 'Presente' : formatMonthYear(exp.fecha_fin);
+
+          return (
+            <article class="experience-card bg-white rounded-3xl border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden transition-all duration-500 hover:shadow-2xl  relative group cursor-pointer min-h-[380px] md:min-h-[350px] flex flex-col md:flex-row items-stretch">
+              
+              <!-- CAPA 1: IMAGEN / VIDEO / LOGO -->
+              <!-- En desktop sin hover: cubre el 100% de la card. Con hover: se retrae al 53% con corte de 120° -->
+              <div class="experience-media-layer w-full md:absolute md:inset-y-0 md:left-0 h-64 md:h-full z-10 overflow-hidden flex items-center justify-center transition-all duration-500 ease-out bg-gray-100">
+                {isVideo ? (
+                  <video
+                    src={mediaUrl}
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                ) : mediaUrl ? (
+                  <img
+                    src={mediaUrl}
+                    alt={`Logo o imagen de ${exp.empresa}`}
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div class="w-full h-full min-h-[260px] bg-gradient-to-br from-orange-500 via-amber-500 to-orange-600 flex items-center justify-center text-white p-8 relative overflow-hidden">
+                    <div class="absolute w-72 h-72 bg-white/10 rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700"></div>
+                    <div class="flex flex-col items-center justify-center relative z-10 transition-transform duration-500 md:group-hover:-translate-x-4">
+                      <span class="text-6xl sm:text-7xl font-black tracking-tight drop-shadow-sm transition-transform duration-300 group-hover:scale-105">
+                        {exp.empresa.slice(0, 2).toUpperCase()}
+                      </span>
+                      <span class="text-base sm:text-lg font-bold text-white/90 mt-3 tracking-wide">
+                        {exp.empresa}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                <!-- NOMBRE EN GRIS MEDIO TRANSPARENTE EN EL MEDIO TIRANDO PARA LA DERECHA (END) - OCULTO EN MÓVILES -->
+                <div class="watermark-overlay absolute inset-y-0 right-0 w-full sm:w-2/3 hidden md:flex items-center justify-end pr-8 sm:pr-12 md:pr-16 text-right pointer-events-none transition-all duration-500 ease-out group-hover:opacity-0 group-hover:translate-x-6 z-20">
+                  <div class="flex flex-col items-end">
+                    <span class="text-4xl sm:text-6xl md:text-7xl font-black text-gray-900/20 sm:text-gray-900/25 tracking-tighter uppercase leading-none select-none">
+                      {exp.empresa}
+                    </span>
+                    <span class="text-xs sm:text-sm font-bold text-gray-900/30 mt-2.5 tracking-widest uppercase">
+                      {exp.puesto}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CAPA 2: DETALLES DEL PUESTO (LADO DERECHO) -->
+              <!-- En desktop: ocupa la mitad derecha. Solo tiempo, puesto, empresa y botón Ver más -->
+              <div class="experience-details-layer w-full md:w-1/2 md:ml-auto p-5 sm:p-8 lg:p-10 md:pl-12 lg:pl-16 flex flex-col justify-center space-y-3.5 sm:space-y-4 relative z-10 transition-all duration-500 ease-out max-md:opacity-100 md:opacity-0 md:translate-x-6 md:group-hover:opacity-100 md:group-hover:translate-x-0">
+                
+                <!-- Tiempo (Fechas) -->
+                <div class="flex items-center justify-between gap-2 w-full">
+                  <div class="flex items-center gap-1.5 min-w-0 flex-1 text-xs sm:text-sm font-semibold text-gray-500 tracking-wide">
+                    <svg class="w-4 h-4 text-orange-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="truncate">{fechaInicio} — {fechaFin}</span>
+                  </div>
+                  {exp.es_trabajo_actual && (
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80 shrink-0 whitespace-nowrap">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      Actual
+                    </span>
+                  )}
+                </div>
+
+                <!-- Puesto y Empresa -->
+                <div>
+                  <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors tracking-tight">
+                    {exp.puesto}
+                  </h3>
+                  <p class="text-base font-semibold text-gray-600 mt-1">
+                    {exp.empresa}
+                  </p>
+                </div>
+
+                <!-- Botón Ver más -->
+                <div class="pt-2">
+                  <button
+                    type="button"
+                    class="open-modal-trigger inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold shadow-md shadow-orange-500/20 transition-all hover:scale-105 active:scale-95 cursor-pointer"
+                    data-modal-target={`modal-exp-${exp.id}`}
+                  >
+                    <span>Ver más</span>
+                    <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </button>
+                </div>
+
+              </div>
+
+            </article>
+          );
+        })}
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- VISTAS DE DETALLE COMPLETO (PÁGINA COMPLETA CON SCROLL) -->
+  {experiencias.map((exp) => {
+    const mediaUrl = getMediaUrl(exp.logo_empresa);
+    const isVideo = exp.logo_empresa?.mime?.startsWith('video/') ?? false;
+    const fechaInicio = formatMonthYear(exp.fecha_inicio);
+    const fechaFin = exp.es_trabajo_actual ? 'Presente' : formatMonthYear(exp.fecha_fin);
+    const imagenesEmpresa = (Array.isArray(exp.imagenes_empresa)
+      ? exp.imagenes_empresa
+      : exp.imagenes_empresa
+      ? [exp.imagenes_empresa]
+      : []) as any[];
+
+    return (
+      <div
+        id={`modal-exp-${exp.id}`}
+        class="experience-modal fixed inset-0 z-[100] w-full h-full min-h-screen bg-white overflow-y-auto hidden opacity-0 pointer-events-none transition-opacity duration-300"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`modal-title-${exp.id}`}
+      >
+        <!-- Nav Flotante Fijo ("haciendo la finta" del Navbar principal) -->
+        <header class="fixed top-5 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50">
+          <nav class="nav-shell bg-white/95 backdrop-blur-md rounded-full shadow-[0_4px_25px_rgba(0,0,0,0.06)] px-5 sm:px-8 py-3 sm:py-3.5 flex items-center justify-between border border-gray-100 transition-all">
+            
+            <!-- LADO IZQUIERDO: Logo Sonriente + Nombre (Click para cerrar y volver al inicio) -->
+            <button
+              type="button"
+              class="close-modal-trigger flex items-center gap-2.5 group cursor-pointer text-left focus:outline-none"
+              aria-label="Cerrar y volver al inicio"
+            >
+              <span class="w-8 h-8 flex items-center justify-center text-orange-500 transition-transform group-hover:scale-110">
+                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4.5 13C3.8 9.5 5.5 6 9 6.5C10 4 14 4 15 6.5C18.5 6 20.2 9.5 19.5 13C18.5 18 15.5 20 12 20C8.5 20 5.5 18 4.5 13Z" />
+                  <path d="M8.8 11.8C9.3 11.2 10.1 11.2 10.6 11.8" />
+                  <path d="M13.4 11.8C13.9 11.2 14.7 11.2 15.2 11.8" />
+                  <path d="M9.8 15.2C10.8 16.5 13.2 16.5 14.2 15.2" />
+                </svg>
+              </span>
+              <span class="font-bold text-orange-500 text-base sm:text-lg tracking-tight group-hover:opacity-90">
+                {nombre}
+              </span>
+            </button>
+
+            <!-- CENTRO: Enlaces de navegación (cierran el modal y navegan a la sección) -->
+            <div class="hidden md:flex items-center gap-6">
+              <a href="#about" class="modal-nav-link text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Sobre mí</a>
+              <a href="#experience" class="modal-nav-link text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Experiencia</a>
+              <a href="#work" class="modal-nav-link text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Trabajos</a>
+              <a href="#hability" class="modal-nav-link text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Habilidades</a>
+              <a href="#final" class="modal-nav-link text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Contacto</a>
+            </div>
+
+            <!-- LADO DERECHO: Modo oscuro + Ícono Instagram + Botón Cerrar X -->
+            <div class="flex items-center gap-3 sm:gap-4">
+              <!-- Botón de Modo Oscuro -->
+              <button
+                type="button"
+                class="theme-toggle w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-gray-600 hover:text-orange-500 hover:bg-orange-50/70 transition-all cursor-pointer"
+                aria-label="Alternar modo oscuro"
+                title="Modo oscuro"
+              >
+                <!-- Icono Luna (Modo claro) -->
+                <svg class="w-5 h-5 moon-icon transition-transform hover:-rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+                <!-- Icono Sol (Modo oscuro) -->
+                <svg class="w-5 h-5 sun-icon hidden transition-transform hover:rotate-45 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="5"/>
+                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
+              </button>
+              <a
+                href={instagram}
+                target="_blank"
+                rel="noreferrer"
+                class="hidden sm:flex w-6 h-6 items-center justify-center text-gray-700 hover:text-orange-500 transition-transform hover:scale-110"
+                aria-label="Instagram"
+              >
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                </svg>
+              </a>
+              <button
+                type="button"
+                class="close-modal-trigger w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-100 hover:bg-orange-50 hover:text-orange-600 text-gray-700 flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Cerrar modal"
+              >
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+          </nav>
+        </header>
+
+        <!-- Contenedor Central con Todo el Contexto del Trabajo y Scroll Completo -->
+        <main class="w-full max-w-4xl mx-auto px-5 sm:px-8 pt-24 sm:pt-28 pb-16 space-y-10">
+          
+          <!-- Botón de Volver (más abajo, encima del contenido) -->
+          <div class="max-w-2xl mx-auto w-full">
+            <button
+              type="button"
+              class="close-modal-trigger inline-flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-orange-600 transition-all cursor-pointer py-2 px-4 rounded-full bg-gray-50 hover:bg-orange-50 border border-gray-200/90 hover:border-orange-200 group shadow-2xs hover:shadow-xs"
+            >
+              <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1 text-gray-500 group-hover:text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span>Volver a experiencias</span>
+            </button>
+          </div>
+          
+          <!-- Logo / Imagen de la Empresa (Sin contenedor, más grande, centrado y con rounded-2xl) -->
+          <div class="flex justify-center w-full">
+            {isVideo ? (
+              <video
+                src={mediaUrl}
+                autoplay
+                loop
+                muted
+                playsinline
+                class="w-full max-w-2xl h-auto max-h-72 sm:max-h-84 object-cover rounded-2xl shadow-sm"
+              />
+            ) : mediaUrl ? (
+              <img
+                src={mediaUrl}
+                alt={`Logo o imagen de ${exp.empresa}`}
+                class="w-full max-w-2xl h-auto max-h-72 sm:max-h-84 object-cover rounded-2xl shadow-sm"
+              />
+            ) : (
+              <div class="w-full max-w-2xl h-56 sm:h-72 bg-gradient-to-br from-orange-500 via-amber-500 to-orange-600 rounded-2xl shadow-sm flex flex-col items-center justify-center text-white p-6 text-center">
+                <span class="text-5xl sm:text-6xl font-black drop-shadow-sm">
+                  {exp.empresa.slice(0, 2).toUpperCase()}
+                </span>
+                <span class="text-lg sm:text-xl font-bold mt-2 text-white/95">
+                  {exp.empresa}
+                </span>
+              </div>
+            )}
+          </div>
+
+          <!-- Encabezado: Badges, Puesto y Empresa / Fechas -->
+          <div class="space-y-4 max-w-2xl mx-auto w-full">
+            <div class="flex flex-wrap items-center gap-2">
+              {exp.es_trabajo_actual && (
+                <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Actual
+                </span>
+              )}
+              {exp.modalidad && (
+                <span class="px-3.5 py-1 rounded-full text-xs font-medium bg-orange-50/70 text-orange-700 border border-orange-200">
+                  {humanize(exp.modalidad)}
+                </span>
+              )}
+              {exp.tipo_empleo && (
+                <span class="px-3.5 py-1 rounded-full text-xs font-medium bg-slate-50 text-slate-700 border border-slate-200">
+                  {humanize(exp.tipo_empleo)}
+                </span>
+              )}
+            </div>
+
+            <h1 id={`modal-title-${exp.id}`} class="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight">
+              {exp.puesto}
+            </h1>
+
+            <div class="flex flex-wrap items-center gap-2.5 text-lg sm:text-xl font-bold text-gray-800">
+              <span class="text-orange-600">{exp.empresa}</span>
+              <span class="text-gray-300">•</span>
+              <span class="text-gray-500 text-base sm:text-lg font-medium">{fechaInicio} — {fechaFin}</span>
+            </div>
+          </div>
+
+          <!-- Toda la descripción / Responsabilidades y Logros (Editorial, limpio y centrado como en la imagen de referencia) -->
+          {exp.descripcion && (
+            <section class="max-w-2xl mx-auto w-full space-y-4 pt-2">
+              <h2 class="text-xs uppercase tracking-widest font-bold text-gray-400">
+                Responsabilidades y Logros
+              </h2>
+              <div
+                class="text-gray-700 text-lg sm:text-xl md:text-2xl font-normal leading-relaxed space-y-6 sm:space-y-8 [&_p]:text-gray-700 [&_p]:text-lg sm:[&_p]:text-xl md:[&_p]:text-2xl [&_p]:leading-relaxed [&_ul]:list-none [&_ul]:pl-0 [&_ul]:space-y-6 sm:[&_ul]:space-y-8 [&_li]:text-gray-700 [&_li]:text-lg sm:[&_li]:text-xl md:[&_li]:text-2xl [&_li]:leading-relaxed [&_strong]:text-gray-900 [&_strong]:font-semibold"
+                set:html={markdownLite(exp.descripcion)}
+              />
+            </section>
+          )}
+
+          <!-- Todo el Stack de Tecnologías Usadas -->
+          {exp.habilidades_usadas && exp.habilidades_usadas.length > 0 && (
+            <section class="max-w-2xl mx-auto w-full space-y-4 pt-4">
+              <h2 class="text-xs uppercase tracking-widest font-bold text-gray-400">
+                Tecnologías y Herramientas Utilizadas
+              </h2>
+              <div class="flex flex-wrap gap-2 sm:gap-2.5">
+                {exp.habilidades_usadas.map((hab) => (
+                  <span class="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-gray-50 border border-gray-200/90 text-gray-700 shadow-2xs hover:border-orange-300 hover:bg-orange-50/50 transition-colors">
+                    {hab.nombre}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+
+          <!-- Galería / Imágenes de la Empresa (Columna de 3) -->
+          {imagenesEmpresa.length > 0 && (
+            <section class="pt-8">
+              <div class="max-w-2xl mx-auto w-full mb-6">
+                <h2 class="text-xs uppercase tracking-widest font-bold text-gray-400">
+                  Imágenes de la Empresa / Proyecto
+                </h2>
+              </div>
+              <div class="gallery-container flex flex-wrap justify-center gap-4 sm:gap-6">
+                {imagenesEmpresa.map((img: any, idx: number) => {
+                  const url = getMediaUrl(img);
+                  if (!url) return null;
+                  const isImgVideo =
+                    img?.mime?.startsWith('video/') ||
+                    /\.(mp4|webm|ogg|mov)$/i.test(url);
+                  const total = imagenesEmpresa.length;
+
+                  // Distribución en forma de pirámide según la cantidad de elementos
+                  let widthClass = 'w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)]';
+                  if (total === 5) {
+                    // 2 arriba más destacadas y 3 en la base
+                    widthClass = idx < 2
+                      ? 'w-full sm:w-[calc(50%-12px)] md:w-[calc(50%-16px)]'
+                      : 'w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)]';
+                  } else if (total === 4) {
+                    widthClass = 'w-full sm:w-[calc(50%-12px)] md:w-[calc(50%-16px)]';
+                  } else if (total === 3) {
+                    widthClass = idx === 0
+                      ? 'w-full md:w-[calc(60%-16px)]'
+                      : 'w-full sm:w-[calc(50%-12px)] md:w-[calc(48%-16px)]';
+                  } else if (total === 2) {
+                    widthClass = 'w-full sm:w-[calc(50%-12px)] md:w-[calc(50%-16px)]';
+                  } else if (total === 1) {
+                    widthClass = 'w-full max-w-2xl';
+                  }
+
+                  const aspectRatioStyle =
+                    img?.width && img?.height
+                      ? `aspect-ratio: ${img.width} / ${img.height};`
+                      : 'aspect-ratio: 16 / 9;';
+
+                  return (
+                    <div
+                      class={`gallery-card group relative rounded-2xl overflow-hidden border border-gray-200/90 shadow-sm bg-gray-50 flex items-center justify-center transition-all duration-300 hover:shadow-lg hover:border-orange-400 cursor-zoom-in ${widthClass}`}
+                      style={aspectRatioStyle}
+                      data-lightbox-src={url}
+                      data-lightbox-type={isImgVideo ? 'video' : 'image'}
+                      data-lightbox-alt={img?.alternativeText || `Imagen ${idx + 1} de ${exp.empresa}`}
+                    >
+                      {isImgVideo ? (
+                        <div class="relative w-full h-full flex items-center justify-center bg-black">
+                          <video
+                            src={url}
+                            autoplay
+                            loop
+                            muted
+                            playsinline
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          <div class="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-white px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 pointer-events-none shadow-sm">
+                            <svg class="w-3.5 h-3.5 fill-current text-orange-500" viewBox="0 0 24 24">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                            <span>Video</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <img
+                          src={url}
+                          alt={img?.alternativeText || `Imagen ${idx + 1} de ${exp.empresa}`}
+                          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      )}
+
+                      <!-- Indicador de zoom / click para ver a tamaño completo -->
+                      <div class="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
+                        <span class="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md text-gray-900 flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
+                          <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          <!-- Botón inferior para regresar -->
+          <div class="max-w-2xl mx-auto w-full pt-8 pb-12 flex justify-center">
+            <button
+              type="button"
+              class="close-modal-trigger inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-gray-900 hover:bg-orange-500 text-white font-semibold text-sm transition-all hover:scale-105 active:scale-95 shadow-md cursor-pointer group"
+            >
+              <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span>Volver a experiencias</span>
+            </button>
+          </div>
+
+        </main>
+      </div>
+    );
+  })}
+
+  <!-- LIGHTBOX MODAL PARA IMÁGENES Y VIDEOS A TAMAÑO COMPLETO -->
+  <div
+    id="experience-lightbox"
+    class="fixed inset-0 z-[200] bg-black/92 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Visor multimedia a tamaño completo"
+  >
+    <button
+      type="button"
+      id="close-lightbox-btn"
+      class="absolute top-5 right-5 z-20 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+      aria-label="Cerrar visor"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <div id="lightbox-content" class="max-w-5xl max-h-[88vh] w-full flex items-center justify-center"></div>
+  </div>
+</section>
+
+<style>
+  /* Mobile: recto y limpio, sin corte diagonal que rompa la imagen o desalinee */
+  .experience-media-layer {
+    clip-path: none;
+  }
+
+  /* Desktop */
+  @media (min-width: 768px) {
+    /* Estado NORMAL (sin hover): cubre el 100% de la tarjeta */
+    .experience-media-layer {
+      width: 100%;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    /* Estado EN HOVER: se contrae a la mitad con el corte diagonal de 120° */
+    .experience-card:hover .experience-media-layer {
+      width: 53%;
+      clip-path: polygon(0 0, 100% 0, calc(100% - 80px) 100%, 0 100%);
+    }
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  const experienceContainer = document.querySelector(".experience-container");
+  if (experienceContainer) {
+    gsap.from(".experience-container", {
+      scrollTrigger: {
+        trigger: "#experience",
+        start: "top 88%",
+        once: true,
+      },
+      y: 30,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power2.out",
+      clearProps: "all",
+    });
+
+    gsap.from(".experience-card", {
+      scrollTrigger: {
+        trigger: ".experience-list",
+        start: "top 90%",
+        once: true,
+      },
+      y: 20,
+      opacity: 0,
+      stagger: 0.12,
+      duration: 0.5,
+      ease: "power2.out",
+      clearProps: "all",
+    });
+  }
+
+  // Interacción de Modales (abrir / cerrar tipo página con animaciones GSAP)
+  const openButtons = document.querySelectorAll('.open-modal-trigger');
+  const closeButtons = document.querySelectorAll('.close-modal-trigger');
+  const modals = document.querySelectorAll('.experience-modal');
+
+  const openModal = (modal: HTMLElement) => {
+    modal.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+    modal.classList.add('opacity-100', 'pointer-events-auto');
+    modal.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+
+    // Animación de entrada de la barra superior
+    const header = modal.querySelector('header');
+    if (header) {
+      gsap.fromTo(
+        header,
+        { y: -24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }
+      );
+    }
+
+    // Animación escalonada de las secciones de contenido
+    const mainElements = modal.querySelectorAll('main > *');
+    if (mainElements.length > 0) {
+      gsap.fromTo(
+        mainElements,
+        { y: 28, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.45, stagger: 0.08, ease: 'power3.out', delay: 0.05 }
+      );
+    }
+
+    // Animación de aparición de las tarjetas de la galería
+    const galleryItems = modal.querySelectorAll('.gallery-card');
+    if (galleryItems.length > 0) {
+      gsap.fromTo(
+        galleryItems,
+        { scale: 0.92, opacity: 0, y: 15 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: 'back.out(1.2)', delay: 0.3 }
+      );
+    }
+  };
+
+  const closeModal = (modal: HTMLElement) => {
+    gsap.to(modal, {
+      opacity: 0,
+      duration: 0.22,
+      ease: 'power2.in',
+      onComplete: () => {
+        modal.classList.remove('opacity-100', 'pointer-events-auto');
+        modal.classList.add('hidden', 'opacity-0', 'pointer-events-none');
+        gsap.set(modal, { clearProps: 'opacity' });
+        document.body.style.overflow = '';
+      },
+    });
+  };
+
+  openButtons.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetId = (btn as HTMLElement).dataset.modalTarget;
+      if (!targetId) return;
+      const modal = document.getElementById(targetId);
+      if (modal) openModal(modal);
+    });
+  });
+
+  closeButtons.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const modal = btn.closest<HTMLElement>('.experience-modal');
+      if (modal) closeModal(modal);
+    });
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>('.modal-nav-link').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      const modal = link.closest<HTMLElement>('.experience-modal');
+      if (modal) closeModal(modal);
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }, 240);
+        }
+      }
+    });
+  });
+
+  modals.forEach((modal) => {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal(modal as HTMLElement);
+      }
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      modals.forEach((modal) => closeModal(modal as HTMLElement));
+    }
+  });
+
+  // Lightbox interactivo para ver imágenes y videos en su tamaño completo
+  const lightbox = document.getElementById('experience-lightbox');
+  const lightboxContent = document.getElementById('lightbox-content');
+  const closeLightboxBtn = document.getElementById('close-lightbox-btn');
+  const galleryCards = document.querySelectorAll('.gallery-card');
+
+  const openLightbox = (src: string, type: string, alt: string) => {
+    if (!lightbox || !lightboxContent) return;
+    if (type === 'video') {
+      lightboxContent.innerHTML = `
+        <video
+          src="${src}"
+          controls
+          autoplay
+          playsinline
+          class="max-w-full max-h-[85vh] w-auto h-auto rounded-2xl shadow-2xl object-contain bg-black"
+        ></video>
+      `;
+    } else {
+      lightboxContent.innerHTML = `
+        <img
+          src="${src}"
+          alt="${alt}"
+          class="max-w-full max-h-[85vh] w-auto h-auto rounded-2xl shadow-2xl object-contain"
+        />
+      `;
+    }
+    lightbox.classList.remove('opacity-0', 'pointer-events-none');
+    lightbox.classList.add('opacity-100', 'pointer-events-auto');
+  };
+
+  const closeLightbox = () => {
+    if (!lightbox || !lightboxContent) return;
+    const video = lightboxContent.querySelector('video');
+    if (video) video.pause();
+    lightbox.classList.remove('opacity-100', 'pointer-events-auto');
+    lightbox.classList.add('opacity-0', 'pointer-events-none');
+    setTimeout(() => {
+      lightboxContent.innerHTML = '';
+    }, 300);
+  };
+
+  galleryCards.forEach((card) => {
+    card.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const target = card as HTMLElement;
+      const src = target.dataset.lightboxSrc;
+      const type = target.dataset.lightboxType || 'image';
+      const alt = target.dataset.lightboxAlt || '';
+      if (src) openLightbox(src, type, alt);
+    });
+  });
+
+  if (closeLightboxBtn) {
+    closeLightboxBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeLightbox();
+    });
+  }
+
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target === lightboxContent) {
+        closeLightbox();
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox && !lightbox.classList.contains('opacity-0')) {
+      closeLightbox();
+    }
+  });
+</script>

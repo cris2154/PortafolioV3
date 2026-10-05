@@ -1,0 +1,75 @@
+---
+import { getConfiguracionGlobal } from '../../service';
+import SocialIcon from './SocialIcon.astro';
+
+const config = await getConfiguracionGlobal();
+const redes = config.redes_sociales ?? [];
+const mailto = config.correo_contacto ? `mailto:${config.correo_contacto}` : null;
+---
+
+<section class="w-full bg-white text-[#111] px-6 md:px-12 py-24  ">
+
+  <!-- Encabezado -->
+  <div class="max-w-6xl mx-auto mb-16 ">
+    <p class="text-sm text-gray-600 flex items-center gap-2">
+      <span class="w-3 h-3 rounded-full bg-green-400 "></span>
+    Contactame
+    </p>
+
+    <h2 class="text-4xl md:text-6xl font-semibold mt-6">
+      Estoy por todo Internet
+    </h2>
+  </div>
+
+  <!-- GRID -->
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 ">
+
+    {redes.map((red) => (
+      <a
+        href={red.url}
+        target={red.red === 'correo' ? undefined : '_blank'}
+        rel="noreferrer"
+        class="contact-card bg-white rounded-2xl px-6 py-10 shadow-sm flex justify-between items-center"
+      >
+        <span class="text-lg font-medium">{red.etiqueta ?? red.red}</span>
+        <span class="w-12 h-12 flex items-center justify-center rounded-full bg-green-400 text-[#111]">
+          <SocialIcon red={red.red} />
+        </span>
+      </a>
+    ))}
+
+    <!-- Get in touch (Tarjeta verde especial) -->
+    {mailto && (
+      <a
+        href={mailto}
+        class="contact-card bg-green-400  rounded-2xl px-6 py-10 shadow-sm flex justify-between items-center"
+      >
+        <span class="text-lg font-medium">Hablemos</span>
+        <span class="w-10 h-10 flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="#111" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7m10 0v10"/>
+          </svg>
+        </span>
+      </a>
+    )}
+
+  </div>
+
+</section>
+
+<style>
+.contact-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.22s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-10px) scale(1.02) rotate(3deg);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.16);
+  border-color: rgba(0, 0, 0, 0.08);
+  background-color: #f8fafc;
+}
+
+.contact-card svg {
+  transition: transform 0.35s ease;
+}
+</style>

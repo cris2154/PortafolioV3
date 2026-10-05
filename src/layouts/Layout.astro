@@ -34,7 +34,14 @@
             "addressCountry": "PE"
         },
         "description": "Diseñador web en Lima que crea experiencias digitales enfocadas en SEO y conversión."
-    }
+    </script>
+    <script is:inline>
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
     </script>
 </head>
 <body>
@@ -43,17 +50,225 @@
 </html>
 <style is:global>
 @import "tailwindcss";
+
     html,body {
         overflow-y: auto;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         scroll-behavior: smooth;
         background-color: white;
+        color: #111827;
         margin: 0;
         padding: 0;
         min-height: 100%;
         box-sizing: border-box;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* MODO OSCURO GLOBAL */
+    html.dark, html.dark body {
+        background-color: #0b0f17 !important;
+        color: #f3f4f6 !important;
+    }
+
+    html.dark section,
+    html.dark main {
+        background-color: #0b0f17 !important;
+        color: #f3f4f6 !important;
+    }
+
+    /* Navbar en modo oscuro */
+    html.dark .nav-shell {
+        background-color: rgba(17, 24, 39, 0.88) !important;
+        border-color: rgba(55, 65, 81, 0.5) !important;
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    html.dark .nav-shell a,
+    html.dark .nav-shell button {
+        color: #e5e7eb;
+    }
+
+    html.dark #mobile-menu {
+        background-color: rgba(17, 24, 39, 0.96) !important;
+        border-color: rgba(55, 65, 81, 0.5) !important;
+    }
+
+    /* Contenedores en modo oscuro */
+    html.dark .hero-container,
+    html.dark .hero-card,
+    html.dark .about-container,
+    html.dark .experience-container,
+    html.dark .skills-container,
+    html.dark .certifications-container,
+    html.dark .work-container,
+    html.dark .final-container,
+    html.dark .work-card,
+    html.dark .experience-card,
+    html.dark .experience-modal,
+    html.dark .work-modal {
+        background-color: #111827 !important;
+        border-color: #1f2937 !important;
+        color: #f3f4f6 !important;
+        box-shadow: 0 20px 60px -15px rgba(0,0,0,0.5) !important;
+    }
+
+    /* Textos en modo oscuro */
+    html.dark h1,
+    html.dark h2,
+    html.dark h3,
+    html.dark h4,
+    html.dark h5,
+    html.dark h6,
+    html.dark .text-gray-900,
+    html.dark .text-gray-800,
+    html.dark [class*="text-gray-900"],
+    html.dark [class*="text-gray-800"] {
+        color: #f9fafb !important;
+    }
+
+    html.dark p,
+    html.dark .text-gray-700,
+    html.dark .text-gray-600,
+    html.dark .text-gray-500,
+    html.dark [class*="text-gray-700"],
+    html.dark [class*="text-gray-600"],
+    html.dark [class*="text-gray-500"] {
+        color: #9ca3af !important;
+    }
+
+    /* Habilidades en modo oscuro */
+    html.dark .category-badge {
+        background-color: #27354a !important;
+        color: #cbd5e1 !important;
+    }
+
+    html.dark .skill-pill {
+        background-color: #1a2333 !important;
+        border-color: #27354a !important;
+    }
+
+    html.dark .skill-pill:hover {
+        background-color: #222f44 !important;
+        border-color: #f97316 !important;
+    }
+
+    html.dark .skill-name {
+        color: #f3f4f6 !important;
+    }
+
+    html.dark .skill-pill:hover .skill-name {
+        color: #f97316 !important;
+    }
+
+    html.dark .skill-initials {
+        background-color: #0b0f17 !important;
+        border: 1px solid #334155 !important;
+        color: #f97316 !important;
+    }
+
+    /* Elementos y fondos secundarios en modo oscuro */
+    html.dark [class*="bg-gray-50"],
+    html.dark [class*="bg-gray-100"] {
+        background-color: #1a2333 !important;
+        border-color: #27354a !important;
+        color: #e5e7eb !important;
+    }
+
+    /* Tarjeta de perfil en la sección Final */
+    html.dark .final-profile-card {
+        background-color: #161f30 !important;
+        border-color: #27354a !important;
+    }
+
+    /* Botones de redes sociales en modo oscuro */
+    html.dark .social-btn {
+        background-color: #1f293d !important;
+        color: #f1f5f9 !important;
+        border-color: #334155 !important;
+    }
+
+    html.dark .social-btn:hover {
+        background-color: #f97316 !important;
+        border-color: #f97316 !important;
+        color: #ffffff !important;
+    }
+
+    html.dark .social-btn svg {
+        color: inherit !important;
+    }
+
+    /* Enlace de correo en Final */
+    html.dark .final-email-link {
+        color: #ffffff !important;
+    }
+
+    html.dark .final-email-link:hover {
+        color: #f97316 !important;
+    }
+
+    /* Bordes y divisores en modo oscuro */
+    html.dark .border-gray-100,
+    html.dark .border-gray-200,
+    html.dark [class*="border-gray-100"],
+    html.dark [class*="border-gray-200"] {
+        border-color: #27354a !important;
+    }
+
+    /* Badges en modo oscuro (Destacado y Actual) */
+    html.dark .bg-emerald-50,
+    html.dark [class*="bg-emerald-50"] {
+        background-color: rgba(6, 78, 59, 0.4) !important;
+        color: #6ee7b7 !important;
+        border-color: rgba(5, 150, 105, 0.4) !important;
+    }
+
+    html.dark .bg-orange-50,
+    html.dark [class*="bg-orange-50"] {
+        background-color: rgba(124, 45, 18, 0.4) !important;
+        color: #fdba74 !important;
+        border-color: rgba(234, 88, 12, 0.4) !important;
+    }
+
+    /* Textos y bordes dentro de modales en modo oscuro */
+    html.dark .work-modal p,
+    html.dark .work-modal li,
+    html.dark .experience-modal p,
+    html.dark .experience-modal li {
+        color: #cbd5e1 !important;
+    }
+
+    html.dark .work-modal strong,
+    html.dark .experience-modal strong {
+        color: #ffffff !important;
+    }
+
+    html.dark .work-modal div[class*="border"],
+    html.dark .experience-modal div[class*="border"] {
+        border-color: #27354a !important;
+    }
+
+    html.dark .watermark-overlay span {
+        color: rgba(255, 255, 255, 0.12) !important;
+    }
+
+    /* Badges del Hero en modo oscuro */
+    html.dark .hero-location-badge {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    html.dark .hero-location-badge span {
+        color: #f9fafb !important;
+    }
+
+    html.dark .hero-years-badge {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
     }
 </style>
 

@@ -1,0 +1,90 @@
+---
+import { getPerfil } from '../../service';
+import Blocks from './Blocks.astro';
+
+const perfil = await getPerfil();
+---
+
+<section
+    id="about"
+    class="w-full bg-white flex flex-col justify-center items-center py-10 sm:py-14 lg:py-16 relative"
+>
+    <div class="w-full max-w-6xl mx-auto px-4 sm:px-6">
+        <!-- CONTENEDOR 2D IGUAL QUE EL HERO -->
+        <div
+            class="about-container w-full bg-white rounded-3xl lg:rounded-[36px] border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] p-6 sm:p-10 lg:p-12 xl:p-14 relative"
+        >
+            <div class="grid grid-cols-1 md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] gap-8 md:gap-16 items-center">
+                
+                <!-- Título Izquierda (Centrado verticalmente) -->
+                <div>
+                    <h2 class="about-title text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">
+                        Sobre mí
+                    </h2>
+                </div>
+
+                <!-- Contenido Derecha -->
+                <div class="space-y-6 max-w-3xl">
+                    <div class="about-text text-gray-600 text-base sm:text-lg leading-relaxed space-y-4">
+                        <Blocks blocks={perfil.biografia_acerca_de} paragraphClass="text-gray-600 text-base sm:text-lg leading-relaxed" />
+                    </div>
+
+                    <div class="about-link pt-2">
+                        <a
+                            href="#work"
+                            class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 underline underline-offset-4 transition-colors"
+                        >
+                            Descubre más
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    import gsap from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+
+    const aboutContainer = document.querySelector(".about-container");
+    if (aboutContainer) {
+        const aboutTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top 85%",
+                end: "top 35%",
+                scrub: 1,
+            },
+            defaults: { ease: "power2.out" },
+        });
+
+        // 1. Primero entra el contenedor al hacer scroll
+        aboutTl.from(".about-container", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+        })
+        // 2. Luego el título de la izquierda
+        .from(".about-title", {
+            y: 25,
+            opacity: 0,
+            duration: 0.6,
+        }, "-=0.5")
+        // 3. Luego los textos de la biografía en cascada según avanza el scroll
+        .from(".about-text > *", {
+            y: 20,
+            opacity: 0,
+            stagger: 0.2,
+            duration: 0.8,
+        }, "-=0.4")
+        // 4. Finalmente el enlace "Descubre más"
+        .from(".about-link", {
+            y: 15,
+            opacity: 0,
+            duration: 0.5,
+        }, "-=0.3");
+    }
+</script>

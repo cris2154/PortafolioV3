@@ -12,6 +12,7 @@
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.16.0",
     "gsap": "^3.13.0",
+    "strapi-community-astro-loader": "^3.0.0-rc.0",
     "tailwindcss": "^4.1.17"
   }
 }
