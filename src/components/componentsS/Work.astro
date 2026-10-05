@@ -815,32 +815,40 @@ const nombre =
 
   const workContainer = document.querySelector(".work-container");
   if (workContainer) {
-    gsap.from(".work-container", {
+    const workTl = gsap.timeline({
       scrollTrigger: {
         trigger: "#work",
-        start: "top 88%",
+        start: "top 95%",
         once: true,
       },
-      y: 30,
-      opacity: 0,
-      duration: 0.6,
-      ease: "power2.out",
-      clearProps: "all",
+      defaults: { ease: "power2.out" },
     });
 
-    gsap.from(".work-card", {
-      scrollTrigger: {
-        trigger: ".work-list",
-        start: "top 90%",
-        once: true,
-      },
+    workTl.from(".work-container", {
       y: 20,
       opacity: 0,
-      stagger: 0.12,
-      duration: 0.5,
-      ease: "power2.out",
+      duration: 0.4,
       clearProps: "all",
-    });
+    })
+    .from(".work-header h2", {
+      y: 12,
+      opacity: 0,
+      duration: 0.3,
+      clearProps: "all",
+    }, "-=0.25")
+    .from(".work-header p", {
+      y: 10,
+      opacity: 0,
+      duration: 0.28,
+      clearProps: "all",
+    }, "-=0.2")
+    .from(".work-card", {
+      y: 15,
+      opacity: 0,
+      stagger: 0.08,
+      duration: 0.35,
+      clearProps: "all",
+    }, "-=0.2");
   }
 
   // Interacción de Modales (abrir / cerrar tipo página con animaciones GSAP)

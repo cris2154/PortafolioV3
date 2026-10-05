@@ -164,7 +164,7 @@ const grupos = categoriasOrdenadas.map((cat) => ({
         </div>
 
         <!-- Contenido Derecha: Categorías y Tecnologías -->
-        <div class="space-y-7 divide-y divide-gray-100 [&>*:not(:first-child)]:pt-7">
+        <div class="space-y-7 sm:space-y-8">
           {grupos.map((grupo) => (
             <div class="space-y-3.5">
               <!-- Encabezado de la categoría -->
@@ -215,33 +215,77 @@ const grupos = categoriasOrdenadas.map((cat) => ({
 
   const certsContainer = document.querySelector(".certifications-container");
   if (certsContainer) {
-    gsap.from(".certifications-container", {
+    const certsTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".certifications-container",
-        start: "top 90%",
+        start: "top 95%",
         once: true,
       },
-      y: 25,
-      opacity: 0,
-      duration: 0.6,
-      ease: "power2.out",
-      clearProps: "all",
+      defaults: { ease: "power2.out" },
     });
+
+    certsTl.from(".certifications-container", {
+      y: 20,
+      opacity: 0,
+      duration: 0.4,
+      clearProps: "all",
+    })
+    .from(".certifications-container h2, .certifications-container p", {
+      y: 12,
+      opacity: 0,
+      stagger: 0.05,
+      duration: 0.3,
+      clearProps: "all",
+    }, "-=0.25")
+    .from(".certifications-container .rounded-2xl", {
+      y: 14,
+      opacity: 0,
+      stagger: 0.05,
+      duration: 0.3,
+      clearProps: "all",
+    }, "-=0.2");
   }
 
   const skillsContainer = document.querySelector(".skills-container");
   if (skillsContainer) {
-    gsap.from(".skills-container", {
+    const skillsTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".skills-container",
-        start: "top 90%",
+        start: "top 95%",
         once: true,
       },
-      y: 25,
-      opacity: 0,
-      duration: 0.6,
-      ease: "power2.out",
-      clearProps: "all",
+      defaults: { ease: "power2.out" },
     });
+
+    skillsTl.from(".skills-container", {
+      y: 20,
+      opacity: 0,
+      duration: 0.4,
+      clearProps: "all",
+    })
+    .from(".skills-container h2, .skills-container p", {
+      y: 12,
+      opacity: 0,
+      stagger: 0.05,
+      duration: 0.3,
+      clearProps: "all",
+    }, "-=0.25")
+    .from(".skills-container h3, .skills-container .category-badge", {
+      y: 10,
+      opacity: 0,
+      stagger: 0.04,
+      duration: 0.25,
+      clearProps: "all",
+    }, "-=0.2")
+    .from(".skills-container .skill-pill", {
+      y: 10,
+      opacity: 0,
+      scale: 0.96,
+      stagger: {
+        amount: 0.2,
+      },
+      duration: 0.28,
+      clearProps: "all",
+    }, "-=0.15");
   }
 </script>

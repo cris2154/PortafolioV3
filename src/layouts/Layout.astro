@@ -96,7 +96,6 @@
     }
 
     /* Contenedores en modo oscuro */
-    html.dark .hero-container,
     html.dark .hero-card,
     html.dark .about-container,
     html.dark .experience-container,
@@ -112,6 +111,21 @@
         border-color: #1f2937 !important;
         color: #f3f4f6 !important;
         box-shadow: 0 20px 60px -15px rgba(0,0,0,0.5) !important;
+    }
+
+    /* En mobile, hero-container es transparente igual que en modo claro */
+    html.dark .hero-container {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    @media (min-width: 1024px) {
+        html.dark .hero-container {
+            background-color: #111827 !important;
+            border: 1px solid #1f2937 !important;
+            box-shadow: 0 20px 60px -15px rgba(0,0,0,0.5) !important;
+        }
     }
 
     /* Textos en modo oscuro */

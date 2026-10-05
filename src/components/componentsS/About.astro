@@ -54,37 +54,36 @@ const perfil = await getPerfil();
         const aboutTl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#about",
-                start: "top 85%",
-                end: "top 35%",
-                scrub: 1,
+                start: "top 95%",
+                once: true,
             },
             defaults: { ease: "power2.out" },
         });
 
-        // 1. Primero entra el contenedor al hacer scroll
         aboutTl.from(".about-container", {
-            y: 50,
-            opacity: 0,
-            duration: 1,
-        })
-        // 2. Luego el título de la izquierda
-        .from(".about-title", {
-            y: 25,
-            opacity: 0,
-            duration: 0.6,
-        }, "-=0.5")
-        // 3. Luego los textos de la biografía en cascada según avanza el scroll
-        .from(".about-text > *", {
             y: 20,
             opacity: 0,
-            stagger: 0.2,
-            duration: 0.8,
-        }, "-=0.4")
-        // 4. Finalmente el enlace "Descubre más"
-        .from(".about-link", {
-            y: 15,
+            duration: 0.4,
+            clearProps: "all",
+        })
+        .from(".about-title", {
+            y: 12,
             opacity: 0,
-            duration: 0.5,
-        }, "-=0.3");
+            duration: 0.3,
+            clearProps: "all",
+        }, "-=0.25")
+        .from(".about-text > *", {
+            y: 12,
+            opacity: 0,
+            stagger: 0.06,
+            duration: 0.35,
+            clearProps: "all",
+        }, "-=0.2")
+        .from(".about-link", {
+            y: 10,
+            opacity: 0,
+            duration: 0.3,
+            clearProps: "all",
+        }, "-=0.15");
     }
 </script>

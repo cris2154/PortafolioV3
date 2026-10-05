@@ -12,14 +12,14 @@ const redes = config.redes_sociales ?? [];
 
 <section
     id="top"
-    class="w-full min-h-screen bg-white flex flex-col justify-center items-center relative overflow-hidden py-20 lg:py-0"
+    class="w-full bg-white flex flex-col justify-center items-center relative pt-28 pb-16 sm:pt-32 sm:pb-20 lg:py-0 lg:min-h-screen overflow-x-hidden"
 >
-    <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 lg:py-16">
+    <div class="w-full max-w-6xl mx-auto px-4 sm:px-6 py-2 sm:py-6 lg:py-16">
         <!-- CONTENEDOR 2D QUE ENGLOBA TODO EN PC -->
         <div
             class="hero-container w-full lg:bg-white lg:rounded-[36px] lg:border lg:border-gray-100 lg:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] lg:p-10 xl:p-14 relative"
         >
-            <div class="grid gap-10 lg:grid-cols-2 items-center">
+            <div class="grid gap-8 sm:gap-10 lg:grid-cols-2 items-center">
                 <!-- TARJETA DE PERFIL (IZQUIERDA) -->
                 <div class="flex justify-center lg:justify-start items-center">
                     <div
@@ -179,11 +179,11 @@ const redes = config.redes_sociales ?? [];
 
                         {
                             perfil.anios_experiencia != null && (
-                                <div class="hero-pill inline-flex flex-wrap items-center justify-center lg:justify-start gap-3">
-                                    <span class="text-2xl sm:text-3xl lg:text-4xl font-bold">
+                                <div class="hero-pill inline-flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3">
+                                    <span class="text-xl sm:text-3xl lg:text-4xl font-bold">
                                         con{" "}
                                     </span>
-                                    <span class="hero-years-badge inline-flex items-center bg-gray-900 text-white px-5 py-3 sm:px-7 sm:py-4 rounded-full text-lg sm:text-2xl lg:text-3xl font-bold border border-transparent shadow-sm">
+                                    <span class="hero-years-badge inline-flex items-center bg-gray-900 text-white px-4 py-2 sm:px-7 sm:py-4 rounded-full text-base sm:text-2xl lg:text-3xl font-bold border border-transparent shadow-sm">
                                         {perfil.anios_experiencia}+ años de
                                         experiencia
                                     </span>
@@ -193,10 +193,10 @@ const redes = config.redes_sociales ?? [];
 
                         {
                             perfil.ubicacion && (
-                                <div class="hero-country flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xl sm:text-2xl lg:text-4xl font-bold">
+                                <div class="hero-country flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 text-lg sm:text-2xl lg:text-4xl font-bold">
                                     <span>desde</span>
-                                    <span class="hero-location-badge inline-flex items-center gap-2 bg-white text-gray-900 px-5 py-3 rounded-full shadow-md border border-gray-100">
-                                        <span class="text-lg sm:text-xl lg:text-2xl font-bold">
+                                    <span class="hero-location-badge inline-flex items-center gap-2 bg-white text-gray-900 px-4 py-2 sm:px-5 sm:py-3 rounded-full shadow-md border border-gray-100">
+                                        <span class="text-base sm:text-xl lg:text-2xl font-bold">
                                             {perfil.ubicacion}
                                         </span>
                                     </span>
@@ -294,7 +294,7 @@ const redes = config.redes_sociales ?? [];
 
     // Línea de tiempo de entrada coordinada
     const tl = gsap.timeline({
-        defaults: { ease: "power3.out", duration: 0.7 },
+        defaults: { ease: "power3.out", duration: 0.7, clearProps: "all" },
     });
     tl.from(".hero-container", { y: 25, opacity: 0, duration: 0.8 })
         .from(".hero-card", { y: 20, opacity: 0, duration: 0.6 }, "-=0.5")
@@ -333,5 +333,6 @@ const redes = config.redes_sociales ?? [];
         duration: 0.8,
         ease: "power3.out",
         delay: 0.8,
+        clearProps: "all",
     });
 </script>
