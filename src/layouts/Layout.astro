@@ -36,6 +36,31 @@
         "description": "Diseñador web en Lima que crea experiencias digitales enfocadas en SEO y conversión."
     </script>
     <script is:inline>
+      // Siempre volver al inicio al recargar la página
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+      window.scrollTo(0, 0);
+
+      window.addEventListener('beforeunload', () => {
+        window.scrollTo(0, 0);
+      });
+
+      window.addEventListener('pageshow', () => {
+        window.scrollTo(0, 0);
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        window.scrollTo(0, 0);
+      });
+
+      window.addEventListener('load', () => {
+        window.scrollTo(0, 0);
+      });
+
       const theme = localStorage.getItem('theme');
       if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');

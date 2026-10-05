@@ -98,7 +98,7 @@ const grupos = categoriasOrdenadas.map((cat) => ({
               {certificaciones.map((cert) => {
                 const certIcon = getMediaUrl(cert.icono, 'thumbnail');
                 return (
-                  <div class="p-4 sm:p-5 rounded-2xl bg-gray-50/80 border border-gray-100 shadow-xs flex flex-col justify-between gap-3 hover:bg-white hover:border-orange-200 hover:shadow-md transition-all group">
+                  <div class="cert-card p-4 sm:p-5 rounded-2xl bg-gray-50/80 border border-gray-100 shadow-xs flex flex-col justify-between gap-3 hover:bg-white hover:border-orange-200 hover:shadow-md transition-all group">
                     <div class="flex items-start gap-3.5">
                       {certIcon ? (
                         <img src={certIcon} alt="" class="w-11 h-11 rounded-xl object-contain shrink-0 bg-white p-1.5 border border-gray-100" loading="lazy" />
@@ -166,11 +166,11 @@ const grupos = categoriasOrdenadas.map((cat) => ({
         <!-- Contenido Derecha: Categorías y Tecnologías -->
         <div class="space-y-7 sm:space-y-8">
           {grupos.map((grupo) => (
-            <div class="space-y-3.5">
+            <div class="hability-group space-y-3.5">
               <!-- Encabezado de la categoría -->
-              <div class="flex items-center gap-2.5">
-                <span class="w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_6px_#f97316]"></span>
-                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-800">
+              <div class="category-header flex items-center gap-2.5">
+                <span class="category-dot w-2 h-2 rounded-full bg-orange-500 shadow-[0_0_6px_#f97316]"></span>
+                <h3 class="category-title text-sm font-bold uppercase tracking-wider text-gray-800">
                   {grupo.meta.titulo}
                 </h3>
                 <span class="category-badge text-[11px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 ml-auto sm:ml-0">
@@ -213,79 +213,110 @@ const grupos = categoriasOrdenadas.map((cat) => ({
   import { ScrollTrigger } from "gsap/ScrollTrigger";
   gsap.registerPlugin(ScrollTrigger);
 
+  // ENTRADA CON SCROLL PARA CERTIFICACIONES
   const certsContainer = document.querySelector(".certifications-container");
   if (certsContainer) {
+    const certCards = certsContainer.querySelectorAll(".cert-card");
     const certsTl = gsap.timeline({
       scrollTrigger: {
         trigger: ".certifications-container",
-        start: "top 95%",
+        start: "top 92%",
         once: true,
       },
       defaults: { ease: "power2.out" },
     });
 
-    certsTl.from(".certifications-container", {
+    certsTl.from(".certifications-container h2, .certifications-container p", {
       y: 20,
       opacity: 0,
+      stagger: 0.08,
       duration: 0.4,
       clearProps: "all",
-    })
-    .from(".certifications-container h2, .certifications-container p", {
-      y: 12,
-      opacity: 0,
-      stagger: 0.05,
-      duration: 0.3,
-      clearProps: "all",
-    }, "-=0.25")
-    .from(".certifications-container .rounded-2xl", {
-      y: 14,
-      opacity: 0,
-      stagger: 0.05,
-      duration: 0.3,
-      clearProps: "all",
-    }, "-=0.2");
+    });
+
+    if (certCards.length > 0) {
+      certsTl.from(certCards, {
+        y: 20,
+        opacity: 0,
+        scale: 0.95,
+        stagger: 0.08,
+        duration: 0.5,
+        clearProps: "all",
+      }, "-=0.2");
+    }
   }
 
+  // ENTRADA CON SCROLL PARA HABILIDADES (CADA CATEGORÍA Y SUS PÍLDORAS)
   const skillsContainer = document.querySelector(".skills-container");
   if (skillsContainer) {
-    const skillsTl = gsap.timeline({
+    // Título y subtítulo en la columna izquierda
+    gsap.from(".skills-container h2, .skills-container p", {
       scrollTrigger: {
         trigger: ".skills-container",
-        start: "top 95%",
+        start: "top 92%",
         once: true,
       },
-      defaults: { ease: "power2.out" },
-    });
-
-    skillsTl.from(".skills-container", {
       y: 20,
       opacity: 0,
+      stagger: 0.08,
       duration: 0.4,
+      ease: "power2.out",
       clearProps: "all",
-    })
-    .from(".skills-container h2, .skills-container p", {
-      y: 12,
-      opacity: 0,
-      stagger: 0.05,
-      duration: 0.3,
-      clearProps: "all",
-    }, "-=0.25")
-    .from(".skills-container h3, .skills-container .category-badge", {
-      y: 10,
-      opacity: 0,
-      stagger: 0.04,
-      duration: 0.25,
-      clearProps: "all",
-    }, "-=0.2")
-    .from(".skills-container .skill-pill", {
-      y: 10,
-      opacity: 0,
-      scale: 0.96,
-      stagger: {
-        amount: 0.2,
-      },
-      duration: 0.28,
-      clearProps: "all",
-    }, "-=0.15");
+    });
+
+    // Cada categoría activa su propia animación fluida y coordinada al hacer scroll
+    const groups = document.querySelectorAll(".hability-group");
+    groups.forEach((group) => {
+      const header = group.querySelector(".category-header");
+      const dot = group.querySelector(".category-dot");
+      const pills = group.querySelectorAll(".skill-pill");
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: group,
+          start: "top 90%",
+          once: true,
+        },
+        defaults: { ease: "power3.out" },
+      });
+
+      tl.from(group, {
+        y: 16,
+        opacity: 0,
+        duration: 0.45,
+        clearProps: "all",
+      });
+
+      if (dot) {
+        tl.from(dot, {
+          scale: 0.4,
+          opacity: 0,
+          duration: 0.3,
+          ease: "back.out(2)",
+          clearProps: "all",
+        }, "-=0.35");
+      }
+
+      if (header) {
+        tl.from(header, {
+          y: 8,
+          opacity: 0,
+          duration: 0.3,
+          clearProps: "all",
+        }, "-=0.3");
+      }
+
+      if (pills.length > 0) {
+        tl.from(pills, {
+          y: 10,
+          opacity: 0,
+          scale: 0.94,
+          stagger: 0.025,
+          duration: 0.35,
+          ease: "power2.out",
+          clearProps: "all",
+        }, "-=0.25");
+      }
+    });
   }
 </script>

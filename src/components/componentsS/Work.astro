@@ -815,40 +815,37 @@ const nombre =
 
   const workContainer = document.querySelector(".work-container");
   if (workContainer) {
-    const workTl = gsap.timeline({
+    // Encabezado de Trabajos
+    gsap.from(".work-header h2, .work-header p", {
       scrollTrigger: {
         trigger: "#work",
-        start: "top 95%",
+        start: "top 92%",
         once: true,
       },
-      defaults: { ease: "power2.out" },
-    });
-
-    workTl.from(".work-container", {
-      y: 20,
-      opacity: 0,
-      duration: 0.4,
-      clearProps: "all",
-    })
-    .from(".work-header h2", {
-      y: 12,
-      opacity: 0,
-      duration: 0.3,
-      clearProps: "all",
-    }, "-=0.25")
-    .from(".work-header p", {
-      y: 10,
-      opacity: 0,
-      duration: 0.28,
-      clearProps: "all",
-    }, "-=0.2")
-    .from(".work-card", {
-      y: 15,
+      y: 16,
       opacity: 0,
       stagger: 0.08,
-      duration: 0.35,
+      duration: 0.45,
+      ease: "power3.out",
       clearProps: "all",
-    }, "-=0.2");
+    });
+
+    // Cada proyecto entra suavemente al llegar con el scroll
+    const workCards = document.querySelectorAll(".work-card");
+    workCards.forEach((card) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 88%",
+          once: true,
+        },
+        y: 20,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power3.out",
+        clearProps: "all",
+      });
+    });
   }
 
   // Interacción de Modales (abrir / cerrar tipo página con animaciones GSAP)
