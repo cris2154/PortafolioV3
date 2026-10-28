@@ -248,6 +248,11 @@ const redes = config.redes_sociales ?? [];
 </section>
 
 <style>
+    .hero-card {
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        will-change: transform;
+    }
     .avatar-box {
         will-change: transform;
     }
@@ -256,83 +261,114 @@ const redes = config.redes_sociales ?? [];
 <script>
     import gsap from "gsap";
 
-    // Microinteracción al pasar el mouse por el avatar
-    const avatarBox = document.querySelector<HTMLElement>(".avatar-box");
-    const avatarGlow = document.querySelector<HTMLElement>(".avatar-glow");
+    function initHeroAnimations() {
+        const container = document.querySelector<HTMLElement>("#top");
+        if (!container) return () => {};
 
-    if (avatarBox) {
-        avatarBox.addEventListener("mouseenter", () => {
-            gsap.to(avatarBox, {
-                scale: 1.08,
-                duration: 0.3,
-                ease: "power2.out",
-            });
-            if (avatarGlow) {
-                gsap.to(avatarGlow, {
-                    opacity: 0.7,
-                    scale: 1.2,
-                    duration: 0.3,
-                });
-            }
-        });
+        const ctx = gsap.context(() => {
+            const mm = gsap.matchMedia();
 
-        avatarBox.addEventListener("mouseleave", () => {
-            gsap.to(avatarBox, {
-                scale: 1,
-                duration: 0.3,
-                ease: "power2.out",
-            });
-            if (avatarGlow) {
-                gsap.to(avatarGlow, {
-                    opacity: 0.4,
-                    scale: 1,
-                    duration: 0.3,
+            mm.add("(prefers-reduced-motion: no-preference)", () => {
+                // Master entrance timeline
+                const tl = gsap.timeline({
+                    defaults: { ease: "power3.out", duration: 0.7, clearProps: "all" },
                 });
-            }
-        });
+
+                tl.from(".hero-container", { y: 30, opacity: 0, duration: 0.8 })
+                    .from(".hero-card", { y: 25, opacity: 0, duration: 0.6 }, "-=0.5")
+                    .from(
+                        ".avatar-box",
+                        {
+                            scale: 0.4,
+                            opacity: 0,
+                            ease: "back.out(1.8)",
+                            duration: 0.6,
+                        },
+                        "-=0.4",
+                    )
+                    .from(".hero-name", { y: 12, opacity: 0, duration: 0.4 }, "-=0.35")
+                    .from(".hero-location", { y: 10, opacity: 0, duration: 0.35 }, "-=0.3")
+                    .from(
+                        "#logosredes .social-item",
+                        {
+                            scale: 0,
+                            y: 12,
+                            opacity: 0,
+                            stagger: 0.05,
+                            ease: "back.out(2)",
+                            duration: 0.45,
+                        },
+                        "-=0.25",
+                    )
+                    .from(".hero-title", { y: 25, opacity: 0 }, "-=0.4")
+                    .from(".hero-pill", { y: 20, opacity: 0 }, "-=0.45")
+                    .from(".hero-country", { y: 20, opacity: 0 }, "-=0.45")
+                    .from(".hero-copy p", { y: 15, opacity: 0 }, "-=0.4")
+                    .from("#boton", { y: 20, opacity: 0, duration: 0.6 }, "-=0.3");
+
+                // Ambient idle pulse on the avatar glow
+                gsap.to(".avatar-glow", {
+                    scale: 1.15,
+                    opacity: 0.6,
+                    duration: 2.5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut",
+                });
+
+                // Interactive 3D tilt on hero card using quickTo for 60fps performance
+                const card = container.querySelector<HTMLElement>(".hero-card");
+                if (card && window.matchMedia("(pointer: fine)").matches) {
+                    const setRotateX = gsap.quickTo(card, "rotationX", { duration: 0.4, ease: "power2.out" });
+                    const setRotateY = gsap.quickTo(card, "rotationY", { duration: 0.4, ease: "power2.out" });
+
+                    const onMouseMove = (e: MouseEvent) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+                        const tiltFactor = 10;
+
+                        setRotateX((-y / (rect.height / 2)) * tiltFactor);
+                        setRotateY((x / (rect.width / 2)) * tiltFactor);
+                    };
+
+                    const onMouseLeave = () => {
+                        setRotateX(0);
+                        setRotateY(0);
+                    };
+
+                    card.addEventListener("mousemove", onMouseMove);
+                    card.addEventListener("mouseleave", onMouseLeave);
+                }
+
+                // Avatar hover micro-interaction
+                const avatarBox = container.querySelector<HTMLElement>(".avatar-box");
+                if (avatarBox) {
+                    avatarBox.addEventListener("mouseenter", () => {
+                        gsap.to(avatarBox, {
+                            scale: 1.08,
+                            duration: 0.3,
+                            ease: "power2.out",
+                        });
+                    });
+
+                    avatarBox.addEventListener("mouseleave", () => {
+                        gsap.to(avatarBox, {
+                            scale: 1,
+                            duration: 0.3,
+                            ease: "power2.out",
+                        });
+                    });
+                }
+            });
+        }, container);
+
+        return () => ctx.revert();
     }
 
-    // Línea de tiempo de entrada coordinada
-    const tl = gsap.timeline({
-        defaults: { ease: "power3.out", duration: 0.7, clearProps: "all" },
-    });
-    tl.from(".hero-container", { y: 25, opacity: 0, duration: 0.8 })
-        .from(".hero-card", { y: 20, opacity: 0, duration: 0.6 }, "-=0.5")
-        .from(
-            ".avatar-box",
-            {
-                scale: 0.3,
-                opacity: 0,
-                ease: "back.out(1.8)",
-                duration: 0.6,
-            },
-            "-=0.4",
-        )
-        .from(".hero-name", { y: 12, opacity: 0, duration: 0.4 }, "-=0.35")
-        .from(".hero-location", { y: 10, opacity: 0, duration: 0.35 }, "-=0.3")
-        .from(
-            "#logosredes .social-item",
-            {
-                scale: 0,
-                y: 12,
-                opacity: 0,
-                stagger: 0.06,
-                ease: "back.out(2)",
-                duration: 0.45,
-            },
-            "-=0.25",
-        )
-        .from(".hero-title", { y: 25, opacity: 0 }, "-=0.4")
-        .from(".hero-pill", { y: 20, opacity: 0 }, "-=0.45")
-        .from(".hero-country", { y: 20, opacity: 0 }, "-=0.45")
-        .from(".hero-copy p", { y: 15, opacity: 0 }, "-=0.4");
-
-    gsap.from("#boton", {
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.8,
-        clearProps: "all",
+    let cleanup = initHeroAnimations();
+    document.addEventListener("astro:after-swap", () => {
+        cleanup();
+        cleanup = initHeroAnimations();
     });
 </script>

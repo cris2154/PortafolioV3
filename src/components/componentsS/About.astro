@@ -10,20 +10,20 @@ const perfil = await getPerfil();
     class="w-full bg-white flex flex-col justify-center items-center py-10 sm:py-14 lg:py-16 relative"
 >
     <div class="w-full max-w-6xl mx-auto px-4 sm:px-6">
-        <!-- CONTENEDOR 2D IGUAL QUE EL HERO -->
+        <!-- 2D Container matching Hero styling -->
         <div
             class="about-container w-full bg-white rounded-3xl lg:rounded-[36px] border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] p-6 sm:p-10 lg:p-12 xl:p-14 relative"
         >
             <div class="grid grid-cols-1 md:grid-cols-[180px_1fr] lg:grid-cols-[220px_1fr] gap-8 md:gap-16 items-center">
                 
-                <!-- Título Izquierda (Centrado verticalmente) -->
+                <!-- Left Title (Vertically centered) -->
                 <div>
                     <h2 class="about-title text-xl sm:text-2xl font-semibold text-gray-900 tracking-tight">
                         Sobre mí
                     </h2>
                 </div>
 
-                <!-- Contenido Derecha -->
+                <!-- Right Content -->
                 <div class="space-y-6 max-w-3xl">
                     <div class="about-text text-gray-600 text-base sm:text-lg leading-relaxed space-y-4">
                         <Blocks blocks={perfil.biografia_acerca_de} paragraphClass="text-gray-600 text-base sm:text-lg leading-relaxed" />
@@ -47,43 +47,73 @@ const perfil = await getPerfil();
 <script>
     import gsap from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
+
     gsap.registerPlugin(ScrollTrigger);
 
-    const aboutContainer = document.querySelector(".about-container");
-    if (aboutContainer) {
-        const aboutTl = gsap.timeline({
-            scrollTrigger: {
-                trigger: "#about",
-                start: "top 95%",
-                once: true,
-            },
-            defaults: { ease: "power2.out" },
-        });
+    function initAboutAnimations(): () => void {
+        const container = document.querySelector<HTMLElement>("#about");
+        if (!container) return () => {};
 
-        aboutTl.from(".about-container", {
-            y: 20,
-            opacity: 0,
-            duration: 0.4,
-            clearProps: "all",
-        })
-        .from(".about-title", {
-            y: 12,
-            opacity: 0,
-            duration: 0.3,
-            clearProps: "all",
-        }, "-=0.25")
-        .from(".about-text > *", {
-            y: 12,
-            opacity: 0,
-            stagger: 0.06,
-            duration: 0.35,
-            clearProps: "all",
-        }, "-=0.2")
-        .from(".about-link", {
-            y: 10,
-            opacity: 0,
-            duration: 0.3,
-            clearProps: "all",
-        }, "-=0.15");
+        const ctx = gsap.context(() => {
+            const mm = gsap.matchMedia();
+
+            mm.add("(prefers-reduced-motion: no-preference)", () => {
+                const aboutTl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: container,
+                        start: "top 95%",
+                        once: true,
+                    },
+                    defaults: { ease: "power2.out" },
+                });
+
+                aboutTl
+                    .from(".about-container", {
+                        y: 20,
+                        opacity: 0,
+                        duration: 0.4,
+                        clearProps: "all",
+                    })
+                    .from(
+                        ".about-title",
+                        {
+                            y: 12,
+                            opacity: 0,
+                            duration: 0.3,
+                            clearProps: "all",
+                        },
+                        "-=0.25",
+                    )
+                    .from(
+                        ".about-text > *",
+                        {
+                            y: 12,
+                            opacity: 0,
+                            stagger: 0.06,
+                            duration: 0.35,
+                            clearProps: "all",
+                        },
+                        "-=0.2",
+                    )
+                    .from(
+                        ".about-link",
+                        {
+                            y: 10,
+                            opacity: 0,
+                            duration: 0.3,
+                            clearProps: "all",
+                        },
+                        "-=0.15",
+                    );
+            });
+        }, container);
+
+        return () => ctx.revert();
     }
+
+    let cleanup = initAboutAnimations();
+    document.addEventListener("astro:after-swap", () => {
+        cleanup();
+        cleanup = initAboutAnimations();
+    });
 </script>

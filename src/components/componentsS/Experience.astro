@@ -37,12 +37,12 @@ const nombre =
 >
   <div class="w-full max-w-6xl mx-auto px-4 sm:px-6">
     
-    <!-- CONTENEDOR GRANDE (IGUAL QUE HERO Y ABOUT) -->
+    <!-- Main container matching Hero and About styling -->
     <div
       class="experience-container w-full bg-white rounded-3xl lg:rounded-[36px] border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] p-6 sm:p-10 lg:p-12 xl:p-14 relative"
     >
       
-      <!-- Encabezado de la Sección -->
+      <!-- Section Header -->
       <div class="experience-header mb-10 sm:mb-12">
         
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
@@ -53,7 +53,7 @@ const nombre =
         </p>
       </div>
 
-      <!-- Lista de Experiencias -->
+      <!-- Experience List -->
       <div class="experience-list space-y-6 sm:space-y-8">
         {experiencias.map((exp) => {
           const mediaUrl = getMediaUrl(exp.logo_empresa);
@@ -64,8 +64,8 @@ const nombre =
           return (
             <article class="experience-card bg-white rounded-3xl border border-gray-100 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.02)] overflow-hidden transition-all duration-500 hover:shadow-2xl  relative group cursor-pointer min-h-[380px] md:min-h-[350px] flex flex-col md:flex-row items-stretch">
               
-              <!-- CAPA 1: IMAGEN / VIDEO / LOGO -->
-              <!-- En desktop sin hover: cubre el 100% de la card. Con hover: se retrae al 53% con corte de 120° -->
+              <!-- Layer 1: Image / Video / Logo -->
+              <!-- Desktop default: covers 100% of card. On hover: retracts to 53% with diagonal cut -->
               <div class="experience-media-layer w-full md:absolute md:inset-y-0 md:left-0 h-64 md:h-full z-10 overflow-hidden flex items-center justify-center transition-all duration-500 ease-out bg-gray-100">
                 {isVideo ? (
                   <video
@@ -97,7 +97,7 @@ const nombre =
                   </div>
                 )}
 
-                <!-- NOMBRE EN GRIS MEDIO TRANSPARENTE EN EL MEDIO TIRANDO PARA LA DERECHA (END) - OCULTO EN MÓVILES -->
+                <!-- Watermark company name, hidden on mobile -->
                 <div class="watermark-overlay absolute inset-y-0 right-0 w-full sm:w-2/3 hidden md:flex items-center justify-end pr-8 sm:pr-12 md:pr-16 text-right pointer-events-none transition-all duration-500 ease-out group-hover:opacity-0 group-hover:translate-x-6 z-20">
                   <div class="flex flex-col items-end">
                     <span class="text-4xl sm:text-6xl md:text-7xl font-black text-gray-900/20 sm:text-gray-900/25 tracking-tighter uppercase leading-none select-none">
@@ -110,11 +110,11 @@ const nombre =
                 </div>
               </div>
 
-              <!-- CAPA 2: DETALLES DEL PUESTO (LADO DERECHO) -->
-              <!-- En desktop: ocupa la mitad derecha. Solo tiempo, puesto, empresa y botón Ver más -->
+              <!-- Layer 2: Role Details (Right side) -->
+              <!-- Desktop: right half with timeline, role, company, and CTA -->
               <div class="experience-details-layer w-full md:w-1/2 md:ml-auto p-5 sm:p-8 lg:p-10 md:pl-12 lg:pl-16 flex flex-col justify-center space-y-3.5 sm:space-y-4 relative z-10 transition-all duration-500 ease-out max-md:opacity-100 md:opacity-0 md:translate-x-6 md:group-hover:opacity-100 md:group-hover:translate-x-0">
                 
-                <!-- Tiempo (Fechas) -->
+                <!-- Timeline / Dates -->
                 <div class="flex items-center justify-between gap-2 w-full">
                   <div class="flex items-center gap-1.5 min-w-0 flex-1 text-xs sm:text-sm font-semibold text-gray-500 tracking-wide">
                     <svg class="w-4 h-4 text-orange-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,7 +130,7 @@ const nombre =
                   )}
                 </div>
 
-                <!-- Puesto y Empresa -->
+                <!-- Role and Company -->
                 <div>
                   <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors tracking-tight">
                     {exp.puesto}
@@ -140,7 +140,7 @@ const nombre =
                   </p>
                 </div>
 
-                <!-- Botón Ver más -->
+                <!-- View more button -->
                 <div class="pt-2">
                   <button
                     type="button"
@@ -165,7 +165,7 @@ const nombre =
 
   </div>
 
-  <!-- VISTAS DE DETALLE COMPLETO (PÁGINA COMPLETA CON SCROLL) -->
+  <!-- Full Detail Modal Views -->
   {experiencias.map((exp) => {
     const mediaUrl = getMediaUrl(exp.logo_empresa);
     const isVideo = exp.logo_empresa?.mime?.startsWith('video/') ?? false;
@@ -185,11 +185,11 @@ const nombre =
         aria-modal="true"
         aria-labelledby={`modal-title-${exp.id}`}
       >
-        <!-- Nav Flotante Fijo ("haciendo la finta" del Navbar principal) -->
+        <!-- Fixed Floating Navbar -->
         <header class="fixed top-5 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-50">
           <nav class="nav-shell bg-white/95 backdrop-blur-md rounded-full shadow-[0_4px_25px_rgba(0,0,0,0.06)] px-5 sm:px-8 py-3 sm:py-3.5 flex items-center justify-between border border-gray-100 transition-all">
             
-            <!-- LADO IZQUIERDO: Logo Sonriente + Nombre (Click para cerrar y volver al inicio) -->
+            <!-- Left side: Logo + Name (Click to close modal) -->
             <button
               type="button"
               class="close-modal-trigger flex items-center gap-2.5 group cursor-pointer text-left focus:outline-none"
@@ -208,7 +208,7 @@ const nombre =
               </span>
             </button>
 
-            <!-- CENTRO: Enlaces de navegación (cierran el modal y navegan a la sección) -->
+            <!-- Center: Nav links (close modal and navigate to section) -->
             <div class="hidden md:flex items-center gap-6">
               <a href="#about" class="modal-nav-link text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Sobre mí</a>
               <a href="#experience" class="modal-nav-link text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Experiencia</a>
@@ -217,20 +217,20 @@ const nombre =
               <a href="#final" class="modal-nav-link text-sm font-medium text-gray-500 hover:text-orange-500 transition-colors">Contacto</a>
             </div>
 
-            <!-- LADO DERECHO: Modo oscuro + Ícono Instagram + Botón Cerrar X -->
+            <!-- Right side: Dark mode + Instagram + Close button -->
             <div class="flex items-center gap-3 sm:gap-4">
-              <!-- Botón de Modo Oscuro -->
+              <!-- Dark Mode Toggle Button -->
               <button
                 type="button"
                 class="theme-toggle w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-gray-600 hover:text-orange-500 hover:bg-orange-50/70 transition-all cursor-pointer"
                 aria-label="Alternar modo oscuro"
                 title="Modo oscuro"
               >
-                <!-- Icono Luna (Modo claro) -->
+                <!-- Moon icon (Light mode) -->
                 <svg class="w-5 h-5 moon-icon transition-transform hover:-rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                 </svg>
-                <!-- Icono Sol (Modo oscuro) -->
+                <!-- Sun icon (Dark mode) -->
                 <svg class="w-5 h-5 sun-icon hidden transition-transform hover:rotate-45 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="5"/>
                   <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
@@ -263,10 +263,10 @@ const nombre =
           </nav>
         </header>
 
-        <!-- Contenedor Central con Todo el Contexto del Trabajo y Scroll Completo -->
+        <!-- Central Content Container -->
         <main class="w-full max-w-4xl mx-auto px-5 sm:px-8 pt-24 sm:pt-28 pb-16 space-y-10">
           
-          <!-- Botón de Volver (más abajo, encima del contenido) -->
+          <!-- Back button -->
           <div class="max-w-2xl mx-auto w-full">
             <button
               type="button"
@@ -279,7 +279,7 @@ const nombre =
             </button>
           </div>
           
-          <!-- Logo / Imagen de la Empresa (Sin contenedor, más grande, centrado y con rounded-2xl) -->
+          <!-- Company Logo / Media -->
           <div class="flex justify-center w-full">
             {isVideo ? (
               <video
@@ -308,7 +308,7 @@ const nombre =
             )}
           </div>
 
-          <!-- Encabezado: Badges, Puesto y Empresa / Fechas -->
+          <!-- Header: Badges, Role, Company, and Dates -->
           <div class="space-y-4 max-w-2xl mx-auto w-full">
             <div class="flex flex-wrap items-center gap-2">
               {exp.es_trabajo_actual && (
@@ -340,7 +340,7 @@ const nombre =
             </div>
           </div>
 
-          <!-- Toda la descripción / Responsabilidades y Logros (Editorial, limpio y centrado como en la imagen de referencia) -->
+          <!-- Full Description / Responsibilities & Achievements -->
           {exp.descripcion && (
             <section class="max-w-2xl mx-auto w-full space-y-4 pt-2">
               <h2 class="text-xs uppercase tracking-widest font-bold text-gray-400">
@@ -353,7 +353,7 @@ const nombre =
             </section>
           )}
 
-          <!-- Todo el Stack de Tecnologías Usadas -->
+          <!-- Full Tech Stack -->
           {exp.habilidades_usadas && exp.habilidades_usadas.length > 0 && (
             <section class="max-w-2xl mx-auto w-full space-y-4 pt-4">
               <h2 class="text-xs uppercase tracking-widest font-bold text-gray-400">
@@ -369,7 +369,7 @@ const nombre =
             </section>
           )}
 
-          <!-- Galería / Imágenes de la Empresa (Columna de 3) -->
+          <!-- Company Media Gallery -->
           {imagenesEmpresa.length > 0 && (
             <section class="pt-8">
               <div class="max-w-2xl mx-auto w-full mb-6">
@@ -386,10 +386,10 @@ const nombre =
                     /\.(mp4|webm|ogg|mov)$/i.test(url);
                   const total = imagenesEmpresa.length;
 
-                  // Distribución en forma de pirámide según la cantidad de elementos
+                  // Layout distribution based on item count
                   let widthClass = 'w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)]';
                   if (total === 5) {
-                    // 2 arriba más destacadas y 3 en la base
+                    // 2 prominent cards on top and 3 at base
                     widthClass = idx < 2
                       ? 'w-full sm:w-[calc(50%-12px)] md:w-[calc(50%-16px)]'
                       : 'w-full sm:w-[calc(50%-12px)] md:w-[calc(33.333%-16px)]';
@@ -444,7 +444,7 @@ const nombre =
                         />
                       )}
 
-                      <!-- Indicador de zoom / click para ver a tamaño completo -->
+                      <!-- Zoom indicator -->
                       <div class="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
                         <span class="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md text-gray-900 flex items-center justify-center shadow-md transform scale-75 group-hover:scale-100 transition-transform">
                           <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -459,7 +459,7 @@ const nombre =
             </section>
           )}
 
-          <!-- Botón inferior para regresar -->
+          <!-- Bottom return button -->
           <div class="max-w-2xl mx-auto w-full pt-8 pb-12 flex justify-center">
             <button
               type="button"
@@ -477,7 +477,7 @@ const nombre =
     );
   })}
 
-  <!-- LIGHTBOX MODAL PARA IMÁGENES Y VIDEOS A TAMAÑO COMPLETO -->
+  <!-- Fullsize Media Lightbox Modal -->
   <div
     id="experience-lightbox"
     class="fixed inset-0 z-[200] bg-black/92 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300"
@@ -501,20 +501,20 @@ const nombre =
 </section>
 
 <style>
-  /* Mobile: recto y limpio, sin corte diagonal que rompa la imagen o desalinee */
+  /* Mobile: clean straight edges */
   .experience-media-layer {
     clip-path: none;
   }
 
   /* Desktop */
   @media (min-width: 768px) {
-    /* Estado NORMAL (sin hover): cubre el 100% de la tarjeta */
+    /* Default state: covers full card width */
     .experience-media-layer {
       width: 100%;
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
     }
 
-    /* Estado EN HOVER: se contrae a la mitad con el corte diagonal de 120° */
+    /* Hover state: contracts with diagonal clip path */
     .experience-card:hover .experience-media-layer {
       width: 53%;
       clip-path: polygon(0 0, 100% 0, calc(100% - 80px) 100%, 0 100%);
@@ -525,219 +525,278 @@ const nombre =
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
+
   gsap.registerPlugin(ScrollTrigger);
 
-  const experienceContainer = document.querySelector(".experience-container");
-  if (experienceContainer) {
-    // Encabezado de Experiencia
-    gsap.from(".experience-header h2, .experience-header p", {
-      scrollTrigger: {
-        trigger: "#experience",
-        start: "top 92%",
-        once: true,
-      },
-      y: 16,
-      opacity: 0,
-      stagger: 0.08,
-      duration: 0.45,
-      ease: "power3.out",
-      clearProps: "all",
-    });
+  function initExperienceAnimations(): () => void {
+    const container = document.querySelector<HTMLElement>("#experience");
+    if (!container) return () => {};
 
-    // Cada tarjeta de experiencia entra suavemente al llegar con el scroll
-    const expCards = document.querySelectorAll(".experience-card");
-    expCards.forEach((card) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: "top 88%",
-          once: true,
-        },
-        y: 20,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power3.out",
-        clearProps: "all",
+    let navScrollTimeout: ReturnType<typeof setTimeout> | null = null;
+    let lightboxTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      // Entrance animations wrapped with prefers-reduced-motion: no-preference
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // Experience section header entrance
+        gsap.from(".experience-header h2, .experience-header p", {
+          scrollTrigger: {
+            trigger: container,
+            start: "top 92%",
+            once: true,
+          },
+          y: 16,
+          opacity: 0,
+          stagger: 0.08,
+          duration: 0.45,
+          ease: "power3.out",
+          clearProps: "all",
+        });
+
+        // Experience cards entrance animations
+        const expCards = container.querySelectorAll<HTMLElement>(".experience-card");
+        expCards.forEach((card) => {
+          gsap.from(card, {
+            scrollTrigger: {
+              trigger: card,
+              start: "top 88%",
+              once: true,
+            },
+            y: 20,
+            opacity: 0,
+            duration: 0.5,
+            ease: "power3.out",
+            clearProps: "all",
+          });
+        });
       });
-    });
-  }
 
-  // Interacción de Modales (abrir / cerrar tipo página con animaciones GSAP)
-  const openButtons = document.querySelectorAll('.open-modal-trigger');
-  const closeButtons = document.querySelectorAll('.close-modal-trigger');
-  const modals = document.querySelectorAll('.experience-modal');
+      // Modal open animation registered in gsap.context
+      const openModal = ctx.add("openModal", (modal: HTMLElement) => {
+        modal.classList.remove("hidden", "opacity-0", "pointer-events-none");
+        modal.classList.add("opacity-100", "pointer-events-auto");
+        modal.scrollTop = 0;
+        document.body.style.overflow = "hidden";
 
-  const openModal = (modal: HTMLElement) => {
-    modal.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
-    modal.classList.add('opacity-100', 'pointer-events-auto');
-    modal.scrollTop = 0;
-    document.body.style.overflow = 'hidden';
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReducedMotion) return;
 
-    // Animación de entrada de la barra superior
-    const header = modal.querySelector('header');
-    if (header) {
-      gsap.fromTo(
-        header,
-        { y: -24, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.35, ease: 'power2.out' }
-      );
-    }
-
-    // Animación escalonada de las secciones de contenido
-    const mainElements = modal.querySelectorAll('main > *');
-    if (mainElements.length > 0) {
-      gsap.fromTo(
-        mainElements,
-        { y: 28, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.45, stagger: 0.08, ease: 'power3.out', delay: 0.05 }
-      );
-    }
-
-    // Animación de aparición de las tarjetas de la galería
-    const galleryItems = modal.querySelectorAll('.gallery-card');
-    if (galleryItems.length > 0) {
-      gsap.fromTo(
-        galleryItems,
-        { scale: 0.92, opacity: 0, y: 15 },
-        { scale: 1, opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: 'back.out(1.2)', delay: 0.3 }
-      );
-    }
-  };
-
-  const closeModal = (modal: HTMLElement) => {
-    gsap.to(modal, {
-      opacity: 0,
-      duration: 0.22,
-      ease: 'power2.in',
-      onComplete: () => {
-        modal.classList.remove('opacity-100', 'pointer-events-auto');
-        modal.classList.add('hidden', 'opacity-0', 'pointer-events-none');
-        gsap.set(modal, { clearProps: 'opacity' });
-        document.body.style.overflow = '';
-      },
-    });
-  };
-
-  openButtons.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const targetId = (btn as HTMLElement).dataset.modalTarget;
-      if (!targetId) return;
-      const modal = document.getElementById(targetId);
-      if (modal) openModal(modal);
-    });
-  });
-
-  closeButtons.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const modal = btn.closest<HTMLElement>('.experience-modal');
-      if (modal) closeModal(modal);
-    });
-  });
-
-  document.querySelectorAll<HTMLAnchorElement>('.modal-nav-link').forEach((link) => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-      const modal = link.closest<HTMLElement>('.experience-modal');
-      if (modal) closeModal(modal);
-      if (href && href.startsWith('#')) {
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) {
-          setTimeout(() => {
-            target.scrollIntoView({ behavior: 'smooth' });
-          }, 240);
+        const header = modal.querySelector<HTMLElement>("header");
+        if (header) {
+          gsap.fromTo(
+            header,
+            { y: -24, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.35, ease: "power2.out" }
+          );
         }
+
+        const mainElements = modal.querySelectorAll<HTMLElement>("main > *");
+        if (mainElements.length > 0) {
+          gsap.fromTo(
+            mainElements,
+            { y: 28, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.45, stagger: 0.08, ease: "power3.out", delay: 0.05 }
+          );
+        }
+
+        const galleryItems = modal.querySelectorAll<HTMLElement>(".gallery-card");
+        if (galleryItems.length > 0) {
+          gsap.fromTo(
+            galleryItems,
+            { scale: 0.92, opacity: 0, y: 15 },
+            { scale: 1, opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: "back.out(1.2)", delay: 0.3 }
+          );
+        }
+      });
+
+      // Modal close animation registered in gsap.context
+      const closeModal = ctx.add("closeModal", (modal: HTMLElement) => {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReducedMotion) {
+          modal.classList.remove("opacity-100", "pointer-events-auto");
+          modal.classList.add("hidden", "opacity-0", "pointer-events-none");
+          document.body.style.overflow = "";
+          return;
+        }
+
+        gsap.to(modal, {
+          opacity: 0,
+          duration: 0.22,
+          ease: "power2.in",
+          onComplete: () => {
+            modal.classList.remove("opacity-100", "pointer-events-auto");
+            modal.classList.add("hidden", "opacity-0", "pointer-events-none");
+            gsap.set(modal, { clearProps: "opacity" });
+            document.body.style.overflow = "";
+          },
+        });
+      });
+
+      // Interactive modal triggers
+      const openButtons = container.querySelectorAll<HTMLElement>(".open-modal-trigger");
+      const closeButtons = container.querySelectorAll<HTMLElement>(".close-modal-trigger");
+      const modals = container.querySelectorAll<HTMLElement>(".experience-modal");
+      const expCards = container.querySelectorAll<HTMLElement>(".experience-card");
+
+      expCards.forEach((card) => {
+        card.addEventListener("click", (e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest("a") || target.closest("button")) return;
+          const trigger = card.querySelector<HTMLElement>(".open-modal-trigger");
+          const targetId = trigger?.dataset.modalTarget;
+          if (!targetId) return;
+          const modal = container.querySelector<HTMLElement>(`#${targetId}`);
+          if (modal) openModal(modal);
+        });
+      });
+
+      openButtons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const targetId = btn.dataset.modalTarget;
+          if (!targetId) return;
+          const modal = container.querySelector<HTMLElement>(`#${targetId}`);
+          if (modal) openModal(modal);
+        });
+      });
+
+      closeButtons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const modal = btn.closest<HTMLElement>(".experience-modal");
+          if (modal) closeModal(modal);
+        });
+      });
+
+      container.querySelectorAll<HTMLAnchorElement>(".modal-nav-link").forEach((link) => {
+        link.addEventListener("click", (e) => {
+          const href = link.getAttribute("href");
+          const modal = link.closest<HTMLElement>(".experience-modal");
+          if (modal) closeModal(modal);
+          if (href && href.startsWith("#")) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+              if (navScrollTimeout) clearTimeout(navScrollTimeout);
+              navScrollTimeout = setTimeout(() => {
+                target.scrollIntoView({ behavior: "smooth" });
+              }, 240);
+            }
+          }
+        });
+      });
+
+      modals.forEach((modal) => {
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) {
+            closeModal(modal);
+          }
+        });
+      });
+
+      // Fullsize media lightbox
+      const lightbox = container.querySelector<HTMLElement>("#experience-lightbox");
+      const lightboxContent = container.querySelector<HTMLElement>("#lightbox-content");
+      const closeLightboxBtn = container.querySelector<HTMLElement>("#close-lightbox-btn");
+      const galleryCards = container.querySelectorAll<HTMLElement>(".gallery-card");
+
+      const openLightbox = (src: string, type: string, alt: string) => {
+        if (!lightbox || !lightboxContent) return;
+        if (type === "video") {
+          lightboxContent.innerHTML = `
+            <video
+              src="${src}"
+              controls
+              autoplay
+              playsinline
+              class="max-w-full max-h-[85vh] w-auto h-auto rounded-2xl shadow-2xl object-contain bg-black"
+            ></video>
+          `;
+        } else {
+          lightboxContent.innerHTML = `
+            <img
+              src="${src}"
+              alt="${alt}"
+              class="max-w-full max-h-[85vh] w-auto h-auto rounded-2xl shadow-2xl object-contain"
+            />
+          `;
+        }
+        lightbox.classList.remove("opacity-0", "pointer-events-none");
+        lightbox.classList.add("opacity-100", "pointer-events-auto");
+      };
+
+      const closeLightbox = () => {
+        if (!lightbox || !lightboxContent) return;
+        const video = lightboxContent.querySelector<HTMLVideoElement>("video");
+        if (video) video.pause();
+        lightbox.classList.remove("opacity-100", "pointer-events-auto");
+        lightbox.classList.add("opacity-0", "pointer-events-none");
+        if (lightboxTimeout) clearTimeout(lightboxTimeout);
+        lightboxTimeout = setTimeout(() => {
+          lightboxContent.innerHTML = "";
+        }, 300);
+      };
+
+      galleryCards.forEach((card) => {
+        card.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const target = card as HTMLElement;
+          const src = target.dataset.lightboxSrc;
+          const type = target.dataset.lightboxType || "image";
+          const alt = target.dataset.lightboxAlt || "";
+          if (src) openLightbox(src, type, alt);
+        });
+      });
+
+      if (closeLightboxBtn) {
+        closeLightboxBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          closeLightbox();
+        });
       }
-    });
-  });
 
-  modals.forEach((modal) => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal(modal as HTMLElement);
+      if (lightbox) {
+        lightbox.addEventListener("click", (e) => {
+          if (e.target === lightbox || e.target === lightboxContent) {
+            closeLightbox();
+          }
+        });
       }
-    });
-  });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      modals.forEach((modal) => closeModal(modal as HTMLElement));
-    }
-  });
+      // Keyboard navigation (Escape to close open lightbox or modal)
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          if (lightbox && !lightbox.classList.contains("opacity-0")) {
+            closeLightbox();
+            return;
+          }
+          modals.forEach((modal) => {
+            if (!modal.classList.contains("hidden") && !modal.classList.contains("opacity-0")) {
+              closeModal(modal);
+            }
+          });
+        }
+      };
 
-  // Lightbox interactivo para ver imágenes y videos en su tamaño completo
-  const lightbox = document.getElementById('experience-lightbox');
-  const lightboxContent = document.getElementById('lightbox-content');
-  const closeLightboxBtn = document.getElementById('close-lightbox-btn');
-  const galleryCards = document.querySelectorAll('.gallery-card');
+      document.addEventListener("keydown", onKeyDown);
 
-  const openLightbox = (src: string, type: string, alt: string) => {
-    if (!lightbox || !lightboxContent) return;
-    if (type === 'video') {
-      lightboxContent.innerHTML = `
-        <video
-          src="${src}"
-          controls
-          autoplay
-          playsinline
-          class="max-w-full max-h-[85vh] w-auto h-auto rounded-2xl shadow-2xl object-contain bg-black"
-        ></video>
-      `;
-    } else {
-      lightboxContent.innerHTML = `
-        <img
-          src="${src}"
-          alt="${alt}"
-          class="max-w-full max-h-[85vh] w-auto h-auto rounded-2xl shadow-2xl object-contain"
-        />
-      `;
-    }
-    lightbox.classList.remove('opacity-0', 'pointer-events-none');
-    lightbox.classList.add('opacity-100', 'pointer-events-auto');
-  };
+      // Cleanup called on ctx.revert()
+      return () => {
+        document.removeEventListener("keydown", onKeyDown);
+        document.body.style.overflow = "";
+        if (navScrollTimeout) clearTimeout(navScrollTimeout);
+        if (lightboxTimeout) clearTimeout(lightboxTimeout);
+      };
+    }, container);
 
-  const closeLightbox = () => {
-    if (!lightbox || !lightboxContent) return;
-    const video = lightboxContent.querySelector('video');
-    if (video) video.pause();
-    lightbox.classList.remove('opacity-100', 'pointer-events-auto');
-    lightbox.classList.add('opacity-0', 'pointer-events-none');
-    setTimeout(() => {
-      lightboxContent.innerHTML = '';
-    }, 300);
-  };
-
-  galleryCards.forEach((card) => {
-    card.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const target = card as HTMLElement;
-      const src = target.dataset.lightboxSrc;
-      const type = target.dataset.lightboxType || 'image';
-      const alt = target.dataset.lightboxAlt || '';
-      if (src) openLightbox(src, type, alt);
-    });
-  });
-
-  if (closeLightboxBtn) {
-    closeLightboxBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeLightbox();
-    });
+    return () => ctx.revert();
   }
 
-  if (lightbox) {
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox || e.target === lightboxContent) {
-        closeLightbox();
-      }
-    });
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && lightbox && !lightbox.classList.contains('opacity-0')) {
-      closeLightbox();
-    }
+  let cleanup = initExperienceAnimations();
+  document.addEventListener("astro:after-swap", () => {
+    cleanup();
+    cleanup = initExperienceAnimations();
   });
 </script>
